@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <PreferenceCategory
+        android:key="general"
+        android:title="General" >
+
+        <CheckBoxPreference android:title="@string/settings_notification"
+            android:defaultValue="true"
+            android:summary="@string/settings_notification_desc"
+            android:layoutDirection="locale"
+            android:textDirection="locale"
+            android:key="statusNotifications" />
+
+        <ListPreference android:title="@string/settings_post_format"
+            android:defaultValue="small"
+            android:summary="@string/settings_post_format_desc"
+            android:layoutDirection="locale"
+            android:textDirection="locale"
+            android:key="post_display_format"
+            android:entries="@array/PostFormat"
+            android:entryValues="@array/PostFormatData"
+            style="@style/AlertDialogCustom.Destructive"/>
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="@string/settings_about"
+        android:key="about_app_category">
+        <Preference
+            android:key="about_app"
+            android:title="@string/about_title"
+            android:layoutDirection="locale"
+            android:textDirection="locale"/>
+    </PreferenceCategory>
+
+
+</PreferenceScreen>

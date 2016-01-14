@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.app.torbjornzetterlund"
+    android:installLocation="auto">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="com.android.launcher.permission.INSTALL_SHORTCUT" />
+
+    <application
+        android:name="com.app.torbjornzetterlund.app.AppController"
+        android:allowBackup="true"
+        android:icon="@drawable/ic_launcher"
+        android:label="@string/app_name"
+        android:theme="@style/AppTheme"
+        android:largeHeap="true"
+        android:supportsRtl="true">
+
+        <!-- Google Play Store Services -->
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
+
+        <!-- Google Analytics Version v4 needs this value for easy tracking -->
+        <meta-data android:name="com.google.android.gms.analytics.globalConfigResource"
+            android:resource="@xml/global_tracker" />
+
+        <activity
+            android:name="com.app.torbjornzetterlund.SplashActivity"
+            android:screenOrientation="portrait" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <!-- Main Activity -->
+        <activity
+            android:name="com.app.torbjornzetterlund.MainActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize" >
+
+        </activity>
+
+        <!-- Post View Activity -->
+        <activity
+            android:name="com.app.torbjornzetterlund.PostViewActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:parentActivityName="com.app.torbjornzetterlund.MainActivity"
+            android:launchMode="singleTop">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.app.torbjornzetterlund.MainActivity" />
+        </activity>
+
+        <!-- Post View Activity -->
+        <activity
+            android:name="com.app.torbjornzetterlund.PostComments"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:parentActivityName="com.app.torbjornzetterlund.PostViewActivity"
+            android:launchMode="singleTop">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.app.torbjornzetterlund.PostViewActivity" />
+        </activity>
+
+        <!-- Setting Activity -->
+        <activity
+            android:name="com.app.torbjornzetterlund.SettingsActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:screenOrientation="portrait" >
+
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.app.torbjornzetterlund.MainActivity" />
+        </activity>
+
+
+        <!-- About Activity -->
+        <activity
+            android:name="com.app.torbjornzetterlund.AboutActivity"
+            android:parentActivityName="com.app.torbjornzetterlund.SettingsActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.app.torbjornzetterlund.SettingsActivity" />
+        </activity>
+
+
+        <!-- Include the AdActivity configChanges and theme. -->
+        <activity
+            android:name="com.google.android.gms.ads.AdActivity"
+            android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize"
+            android:theme="@android:style/Theme.Translucent" />
+
+        <!-- Include the Service in App. -->
+        <receiver
+            android:name="com.app.torbjornzetterlund.Services.BroadcastReceive"
+            android:label="NetworkChangeReceiver" >
+            <intent-filter>
+                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
+                <action android:name="android.net.wifi.WIFI_STATE_CHANGED" />
+            </intent-filter>
+        </receiver>
+
+        <service
+            android:name="com.app.torbjornzetterlund.Services.BroadcastService"
+            android:enabled="true" />
+        <!-- Optionally, register AnalyticsReceiver and AnalyticsService to support background
+                 dispatching on non-Google Play devices -->
+        <receiver android:name="com.google.android.gms.analytics.AnalyticsReceiver"
+            android:enabled="true">
+            <intent-filter>
+                <action android:name="com.google.android.gms.analytics.ANALYTICS_DISPATCH" />
+            </intent-filter>
+        </receiver>
+        <service android:name="com.google.android.gms.analytics.AnalyticsService"
+            android:enabled="true"
+            android:exported="false"/>
+
+        <!-- Optionally, register CampaignTrackingReceiver and CampaignTrackingService to enable
+             installation campaign reporting -->
+        <receiver android:name="com.google.android.gms.analytics.CampaignTrackingReceiver"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="com.android.vending.INSTALL_REFERRER" />
+            </intent-filter>
+        </receiver>
+        <service android:name="com.google.android.gms.analytics.CampaignTrackingService" />
+    </application>
+
+</manifest>

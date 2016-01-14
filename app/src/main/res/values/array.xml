@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string-array name="PostFormat">
+        <item>Small</item>
+        <item>Large</item>
+    </string-array>
+
+    <string-array name="PostFormatData">
+        <item>small</item>
+        <item>large</item>
+    </string-array>
+</resources>

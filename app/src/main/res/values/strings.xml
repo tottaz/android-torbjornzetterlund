@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Torbjorn Zetterlund</string>
+    <string name="copyright">by thunderbeardesign.com</string>
+    <string name="action_settings">Settings</string>
+    <string name="unknown_error">Unknown error</string>
+    <string name="server_unavailable">The application server is unreachable. Please contact with server administrator.</string>
+    <string name="no_internet">No Internet</string>
+    <string name="no_internet_message">No internet connection available at the moment! Please check the internet connection.</string>
+    <string name="recently_added">Recently Added</string>
+    <string name="no_result">No result found</string>
+    <string name="notification_title">Torbjorn Zetterlund for WordPress</string>
+    <string name="notification_msg" formatted="false">You\'ve %d new updates.</string>
+    <string name="comments_button" formatted="false">%s comments on this article</string>
+    <string name="read_this_article">Read this article on the web</string>
+
+    <string name="exit_title">Really Exit?</string>
+    <string name="exit_message">Are you sure you want to exit?</string>
+
+    <string name="unit_id" translatable="false">ca-app-pub-3016609432941096/8496597165</string>
+
+    <string name="unit_id_interstitial" translatable="false">ca-app-pub-3016609432941096/8356996365</string>
+
+    <!-- Set the Parse Client Key -->
+    <string name="parse_client_key">RbHU0VZzIhOVbdLnuHtqFAIWfl5YNTOrCACEQPBi</string>
+
+    <!-- Interstitial Parse Application Id -->
+    <string name="parse_application_id">LKvLLNuCrOr8F7rg2OZAI6wKtIjPqDX4OVuj3Ekr</string>
+
+    <!-- Interstitial adbuddiz  -->
+    <string name="adbuddiz_publisher_key">f8c0ba05-538e-4113-9d2e-4cce91f5e5ea</string>
+
+    <!-- Interstitial adbuddiz  -->
+    <string name="google_analytics">UA-25739408-11</string>
+
+    <string name="action_search">Search</string>
+    <string name="noresult">Sorry! No Result Found</string>
+    <string name="search_hint">Enter your Keyword to Search!</string>
+    <string name="loading_search_results">Loading more data...</string>
+
+    <string name="follow_facebook">Follow us on Facebook</string>
+    <string name="follow_twitter">Follow us on Twitter</string>
+    <string name="follow_googleplus">Follow us on Google+</string>
+
+    <string name="your_name">Name</string>
+    <string name="your_email">Email Address</string>
+    <string name="your_comment">Comment</string>
+    <string name="post_comment">Post Comment</string>
+    <string name="comments_are_closed">Comments are closed.</string>
+    <string name="error_length" formatted="false">Required! Must be greater than %s characters</string>
+    <string name="error_invalid_email">Required! Please enter a valid Email Address</string>
+    <string name="comment_post_title">Comment</string>
+    <string name="comment_post_description">Please wait! We\'re posting your comment...</string>
+    <string name="comment_posted">Comment successfully posted!</string>
+    <string name="comments_tab" formatted="false">Comments ( %s )</string>
+    <string name="comment_tab_post">Post a Comment</string>
+
+    <string name="about_title">About Torbjorn Zetterlund</string>
+    <string name="about_content">This is the personal blog of Torbjorn Zetterlund, he writes about cycling trips he goes on and the work he is invovled in</string>
+    <string name="about_version_title">Version</string>
+
+    <!--String for Settings Page-->
+    <string name="settings_notification">Notification</string>
+    <string name="settings_notification_desc">Allow app to show the notification about recent posts.</string>
+    <string name="settings_post_format">Post Display Format / Style</string>
+    <string name="settings_post_format_desc">Select the style of the post you want to Show?</string>
+    <string name="settings_about">About</string>
+</resources>

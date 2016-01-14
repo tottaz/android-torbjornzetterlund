@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <color name="window_bg">#ffffff</color>
+    <color name="primary">#4CAF50</color>
+    <color name="primary_dark">#388E3C</color>
+    <color name="primary_light">#C8E6C9</color>
+    <color name="accent">#FF5722</color>
+    <color name="primary_text">#212121</color>
+    <color name="secondary_text">#727272</color>
+    <color name="icons">#FFFFFF</color>
+    <color name="divider">#B6B6B6</color>
+
+    <color name="accent_translucent">#1976D2</color>
+    <color name="accent_bright">#03A9F4</color>
+
+    <color name="gradient_start">#50000000</color>
+    <color name="gradient_light_start">#30000000</color>
+
+
+    <color name="list_item_title">#919090</color>
+    <color name="list_item_title_pressed">#FFFFFF</color>
+    <color name="list_background">#FFFFFF</color>
+    <color name="list_background_pressed">#F7F7F7</color>
+    <color name="list_divider">#3e414b</color>
+    <color name="post_image_background">#919090</color>
+    <color name="black">#000000</color>
+    <color name="grid_bg">#000000</color>
+    <color name="grid_item_bg">#1a1b1d</color>
+    <color name="action_bar">#141416</color>
+    <color name="action_bar_title">#ffffff</color>
+    <color name="white">#ffffff</color>
+    <color name="settings_label">#323232</color>
+    <color name="silver">#ededed</color>
+
+    <color name="post_bg">#d3d6db</color>
+    <color name="post_item_bg">#ffffff</color>
+    <color name="post_item_border">#c2c3c8</color>
+    <color name="bottom_border">#c2c3c8</color>
+    <color name="link">#0a80d1</color>
+    <color name="timestamp">#a0a3a7</color>    
+
+</resources>

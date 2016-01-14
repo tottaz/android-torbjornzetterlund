@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="178dp"
+    android:background="@color/primary"
+    android:orientation="vertical"
+    android:weightSum="1">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:orientation="vertical"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true">
+
+        <TextView
+            android:id="@+id/appName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:textColor="#ffffff"
+            android:textSize="14sp"
+            android:textStyle="bold"
+
+            />
+
+        <TextView
+            android:id="@+id/appVersionBuild"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#ffffff"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginTop="5dp"
+            android:textSize="14sp"
+            android:textStyle="normal"
+
+            />
+    </LinearLayout>
+
+    <ImageView
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:src="@drawable/ic_launcher"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginTop="38dp"
+        android:id="@+id/appIcon"
+        />
+    <Button
+        android:id="@+id/facebook_btn"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginLeft="5dp"
+        style="@style/ButtonFacebook"
+        android:layout_alignParentTop="true"
+        android:layout_toLeftOf="@+id/twitter_btn"
+        android:layout_toStartOf="@+id/twitter_btn" />
+
+    <Button
+        android:id="@+id/twitter_btn"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginLeft="5dp"
+        style="@style/ButtonTwitter"
+        android:layout_alignParentTop="true"
+        android:layout_toLeftOf="@+id/google_btn"
+        android:layout_toStartOf="@+id/google_btn" />
+
+    <Button
+        android:id="@+id/google_btn"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginRight="5dp"
+        android:layout_marginLeft="5dp"
+        style="@style/ButtonGooglePlus"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
+</RelativeLayout>

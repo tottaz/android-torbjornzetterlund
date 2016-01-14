@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+
+    <style name="AppTheme" parent="AppTheme.Base">
+        <item name="android:colorPrimary">@color/primary</item> 
+        <item name="android:colorPrimaryDark">@color/primary_dark</item> 
+        <item name="android:colorControlHighlight">@color/accent_translucent</item> 
+        <item name="android:colorAccent">@color/accent</item>
+        <item name="selectableItemBackground">@drawable/selectable_item_background</item>
+        <item name="android:selectableItemBackground">@drawable/selectable_item_background</item>
+        <!--item name="android:windowContentOverlay">@drawable/actionbar_shadow</item>
+        <item name="android:windowTranslucentStatus">true</item-->
+        <item name="android:windowSharedElementEnterTransition">@android:transition/fade</item>
+        <item name="android:windowSharedElementExitTransition">@android:transition/explode</item>
+        <item name="android:windowSharedElementsUseOverlay">false</item>
+    </style>
+
+    <style name="FabStyle" parent="FabStyleButton">
+        <item name="android:outlineProvider">background</item>
+        <item name="android:stateListAnimator">@anim/fab_elevation</item>
+    </style>
+
+</resources>

@@ -40,6 +40,8 @@
         android:padding="4dip"
         android:textSize="12sp"
         android:textColor="@color/white"
-        android:text="@string/copyright" />
+        android:text="@string/copyright"
+        android:layout_alignParentLeft="false"
+        android:layout_alignParentTop="false" />
 
 </RelativeLayout>

@@ -228,7 +228,7 @@ public class ViewCommentsTab extends Fragment {
             public Map<String, String> getHeaders() throws AuthFailureError {
                 HashMap<String, String> headers = new HashMap<String, String>();
                 headers.put("Content-Type", "application/json");
-                headers.put("ApiKey", Const.AuthenticationKey);
+//                headers.put("ApiKey", Const.AuthenticationKey);
                 return headers;
             }
         };

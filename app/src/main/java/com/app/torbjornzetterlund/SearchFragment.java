@@ -1,23 +1,5 @@
 package com.app.torbjornzetterlund;
 
-import com.android.volley.AuthFailureError;
-import com.app.torbjornzetterlund.R;
-import com.app.torbjornzetterlund.app.Const;
-import com.app.torbjornzetterlund.app.AppController;
-import com.app.torbjornzetterlund.app.PostListAdapter;
-import com.app.torbjornzetterlund.utils.AnalyticsUtil;
-import com.app.torbjornzetterlund.utils.ConnectionDetector;
-import com.app.torbjornzetterlund.app.Post;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import android.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
@@ -34,14 +16,32 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
 import com.android.volley.Request.Method;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.app.torbjornzetterlund.app.AppController;
+import com.app.torbjornzetterlund.app.Const;
+import com.app.torbjornzetterlund.app.Post;
+import com.app.torbjornzetterlund.app.PostListAdapter;
+import com.app.torbjornzetterlund.utils.AnalyticsUtil;
+import com.app.torbjornzetterlund.utils.ConnectionDetector;
 import com.app.torbjornzetterlund.utils.RecyclerItemClickListener;
 import com.app.torbjornzetterlund.utils.Utils;
-import com.google.android.gms.ads.*;
+import com.google.android.gms.ads.AdListener;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class SearchFragment extends Fragment {
     private static final String TAG = SearchFragment.class.getSimpleName();
@@ -347,7 +347,7 @@ public class SearchFragment extends Fragment {
             public Map<String, String> getHeaders() throws AuthFailureError {
                 HashMap<String, String> headers = new HashMap<String, String>();
                 headers.put("Content-Type", "application/json");
-                headers.put("ApiKey", Const.AuthenticationKey);
+//                headers.put("ApiKey", Const.AuthenticationKey);
                 return headers;
             }
         };

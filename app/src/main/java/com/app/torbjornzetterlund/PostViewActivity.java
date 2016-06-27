@@ -52,7 +52,6 @@ import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.NetworkImageView;
-import com.app.torbjornzetterlund.R;
 import com.app.torbjornzetterlund.app.AppController;
 import com.app.torbjornzetterlund.app.Const;
 import com.app.torbjornzetterlund.app.Post;
@@ -66,7 +65,6 @@ import com.google.android.gms.ads.InterstitialAd;
 import com.google.android.gms.analytics.GoogleAnalytics;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
-
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -370,7 +368,6 @@ public class PostViewActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-
     private void getPost() {
         //Requesting The Story
         String url = null;
@@ -409,15 +406,13 @@ public class PostViewActivity extends AppCompatActivity {
             public Map<String, String> getHeaders() throws AuthFailureError {
                 HashMap<String, String> headers = new HashMap<String, String>();
                 headers.put("Content-Type", "application/json");
-                headers.put("ApiKey", Const.AuthenticationKey);
+//                headers.put("ApiKey", Const.AuthenticationKey);
                 return headers;
             }
         };
-
         // Adding request to volley request queue
         AppController.getInstance().addToRequestQueue(jsonReq);
     }
-
 
     private void parseJsonFeed(JSONObject feedObj) {
         try {

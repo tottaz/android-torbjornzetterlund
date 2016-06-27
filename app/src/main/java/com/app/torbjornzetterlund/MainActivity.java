@@ -6,7 +6,6 @@ import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.SearchManager;
 import android.content.BroadcastReceiver;
-
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -14,37 +13,30 @@ import android.content.IntentFilter;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.widget.SearchView;
-import android.view.Menu;
-import android.view.MenuItem;
-
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AlertDialog;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Toast;
-
-import com.app.torbjornzetterlund.R;
-import com.app.torbjornzetterlund.utils.AnalyticsUtil;
-import com.app.torbjornzetterlund.utils.NavAdapter;
-import com.app.torbjornzetterlund.utils.NavDrawerItem;
-import com.app.torbjornzetterlund.utils.Utils;
 
 import com.app.torbjornzetterlund.Services.BroadcastService;
 import com.app.torbjornzetterlund.app.AppController;
 import com.app.torbjornzetterlund.app.Category;
 import com.app.torbjornzetterlund.app.Const;
+import com.app.torbjornzetterlund.utils.AnalyticsUtil;
+import com.app.torbjornzetterlund.utils.NavAdapter;
+import com.app.torbjornzetterlund.utils.NavDrawerItem;
+import com.app.torbjornzetterlund.utils.Utils;
 
 import java.util.ArrayList;
 import java.util.List;
-
-//import com.parse.Parse;
-//import com.parse.ParseInstallation;
-//import com.parse.ParseAnalytics;
 
 public class MainActivity extends AppCompatActivity implements NavAdapter.Callback,
                                                                 NavAdapter.OnItemClickListener {

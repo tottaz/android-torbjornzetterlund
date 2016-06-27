@@ -1,23 +1,5 @@
 package com.app.torbjornzetterlund;
 
-import com.android.volley.AuthFailureError;
-import com.app.torbjornzetterlund.R;
-import com.app.torbjornzetterlund.app.Const;
-import com.app.torbjornzetterlund.app.AppController;
-import com.app.torbjornzetterlund.app.Category;
-import com.app.torbjornzetterlund.utils.AnalyticsUtil;
-import com.app.torbjornzetterlund.utils.ConnectionDetector;
-import com.app.torbjornzetterlund.utils.Utils;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -26,18 +8,36 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
+import android.util.Log;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.android.volley.Request.Method;
+import com.android.volley.AuthFailureError;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.JsonArrayRequest;
+import com.app.torbjornzetterlund.app.AppController;
+import com.app.torbjornzetterlund.app.Category;
+import com.app.torbjornzetterlund.app.Const;
+import com.app.torbjornzetterlund.utils.AnalyticsUtil;
+import com.app.torbjornzetterlund.utils.ConnectionDetector;
+import com.app.torbjornzetterlund.utils.Utils;
 import com.google.android.gms.analytics.GoogleAnalytics;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class SplashActivity extends Activity {
     private static final String TAG = SplashActivity.class.getSimpleName();
-    private static final String TAG_CATEGORIES = "categories", TAG_TERM_ID = "term_id",
+    private static final String
+            TAG_CATEGORIES = "categories",
+            TAG_TERM_ID = "id",
             TAG_TERM_NAME = "name";
 
     Boolean isInternetPresent = false;
@@ -64,10 +64,6 @@ public class SplashActivity extends Activity {
         }
         checkInternetConnection();
 
-
-        /*if(!AppController.getInstance().getPrefManger().getShortcutCreated()) {
-            addShortcut();
-        }*/
     }
 
     public void checkInternetConnection (){
@@ -85,39 +81,30 @@ public class SplashActivity extends Activity {
         // Categories request to get list of featured categories
         String url = Const.URL_BLOG_CATEGORIES;
 
-
         // Preparing volley's json object request
-        JsonObjectRequest jsonObjReq = new JsonObjectRequest(Method.GET, url, null, new Response.Listener<JSONObject>() {
+        JsonArrayRequest jsonArrReq = new JsonArrayRequest(url, new Response.Listener<JSONArray>() {
 
             @Override
-            public void onResponse(JSONObject response) {
+            public void onResponse(JSONArray response) {
+                Log.d(TAG, response.toString());
                 List<Category> categories = new ArrayList<Category>();
 
-                try {
-                    if (response.has("error")) {
-                        String error = response.getString("error");
-                        Toast.makeText(getApplicationContext(), error, Toast.LENGTH_LONG).show();
-                    }else {
-                        // Parsing the json response
-                        JSONArray entry = response.getJSONArray(TAG_CATEGORIES);
+                for (int i = 0; i < response.length(); i++) {
+                    try {
+                        JSONObject catObj = response.getJSONObject(i);
+//                            JSONObject catObj = (JSONObject) response.get(i);
+                        // album id
+                        String catID = catObj.getString(TAG_TERM_ID);
 
-                        // loop through categories and add them to album
-                        // list
-                        for (int i = 0; i < entry.length(); i++) {
-                            JSONObject catObj = (JSONObject) entry.get(i);
-                            // album id
-                            String catID = catObj.getString(TAG_TERM_ID);
+                        // album title
+                        String catTitle = catObj.getString(TAG_TERM_NAME);
 
-                            // album title
-                            String catTitle = catObj.getString(TAG_TERM_NAME);
+                        Category category = new Category();
+                        category.setId(catID);
+                        category.setTitle(catTitle);
 
-                            Category category = new Category();
-                            category.setId(catID);
-                            category.setTitle(catTitle);
-
-                            // add album to list
-                            categories.add(category);
-                        }
+                        // add album to list
+                        categories.add(category);
 
                         // Store categories in shared pref
                         AppController.getInstance().getPrefManger().storeCategories(categories);
@@ -125,16 +112,12 @@ public class SplashActivity extends Activity {
                         // String the main activity
                         Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                         startActivity(intent);
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
                     }
-                    // closing spalsh activity
-                    finish();
 
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                    //Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
-                    Toast.makeText(getApplicationContext(), getString(R.string.unknown_error), Toast.LENGTH_LONG).show();
                 }
-
             }
         }, new Response.ErrorListener() {
 
@@ -158,7 +141,7 @@ public class SplashActivity extends Activity {
             public Map<String, String> getHeaders() throws AuthFailureError {
                 HashMap<String, String> headers = new HashMap<String, String>();
                 headers.put("Content-Type", "application/json");
-                headers.put("ApiKey", Const.AuthenticationKey);
+//                headers.put("Per_Page", Const.Per_Page);
                 return headers;
             }
 
@@ -166,10 +149,10 @@ public class SplashActivity extends Activity {
 
         // disable the cache for this request, so that it always fetches updated
         // json
-        jsonObjReq.setShouldCache(false);
+        jsonArrReq.setShouldCache(false);
 
         // Making the request
-        AppController.getInstance().addToRequestQueue(jsonObjReq);
+        AppController.getInstance().addToRequestQueue(jsonArrReq);
     }
 
     public void showAlertDialog(Context context, String title, String message, Boolean status) {

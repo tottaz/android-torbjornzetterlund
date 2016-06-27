@@ -1,17 +1,5 @@
 package com.app.torbjornzetterlund.Services;
 
-import com.android.volley.AuthFailureError;
-import com.android.volley.Request;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonObjectRequest;
-
-import com.app.torbjornzetterlund.MainActivity;
-import com.app.torbjornzetterlund.R;
-import com.app.torbjornzetterlund.app.Const;
-import com.app.torbjornzetterlund.app.AppController;
-import com.app.torbjornzetterlund.utils.ConnectionDetector;
-
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -21,6 +9,17 @@ import android.content.Intent;
 import android.os.Handler;
 import android.os.IBinder;
 import android.widget.Toast;
+
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.app.torbjornzetterlund.MainActivity;
+import com.app.torbjornzetterlund.R;
+import com.app.torbjornzetterlund.app.AppController;
+import com.app.torbjornzetterlund.app.Const;
+import com.app.torbjornzetterlund.utils.ConnectionDetector;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -142,7 +141,7 @@ public class BroadcastService extends Service {
                         public Map<String, String> getHeaders() throws AuthFailureError {
                             HashMap<String, String> headers = new HashMap<String, String>();
                             headers.put("Content-Type", "application/json");
-                            headers.put("ApiKey", Const.AuthenticationKey);
+//                            headers.put("ApiKey", Const.AuthenticationKey);
                             return headers;
                         }
 

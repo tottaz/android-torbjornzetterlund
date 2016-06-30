@@ -366,7 +366,7 @@ public class GridFragment extends Fragment {
 				item.setName(feedObj.getJSONObject("title").getString("rendered"));
 
                 for(int j =0; j < categoriesList.size(); j++){
-                    if(categoriesList.get(j).equals(feedObj.getJSONArray("categories").get(0).toString())){
+                    if(categoriesList.get(j).getId().equals(feedObj.getJSONArray("categories").get(0).toString())){
                         item.setCategory(categoriesList.get(j).getTitle());
                         break;
                     }

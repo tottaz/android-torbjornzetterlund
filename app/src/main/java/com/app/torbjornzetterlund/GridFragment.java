@@ -398,11 +398,11 @@ public class GridFragment extends Fragment {
                 }
 
                 //my item.setProfilePic(feedObj.getString("profilePic"));
-                //my item.setTimeStamp(feedObj.getString("timeStamp"));
-                //my item.setDescription(feedObj.getString("description"));
+
+                item.setDescription(feedObj.getJSONObject("excerpt").getString("rendered"));
 
 				// url might be null sometimes
-				String feedUrl = feedObj.isNull("url") ? null : feedObj.getString("url");
+				String feedUrl = feedObj.isNull("link") ? null : feedObj.getString("link");
 				item.setUrl(feedUrl);
 
 				feedItems.add(item);

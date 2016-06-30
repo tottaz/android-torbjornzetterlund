@@ -372,7 +372,7 @@ public class GridFragment extends Fragment {
                     }
                 }
 
-                //!!! getting image in loop is very bed practice
+                //!!! getting image in loop is very bad practice
                 /*JsonObjectRequest mediaReq = new JsonObjectRequest(Method.GET, "https://torbjornzetterlund.com/wp-json/wp/v2/media/6380", null, new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {

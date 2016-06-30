@@ -19,8 +19,10 @@ import com.android.volley.Request.Method;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
+import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.app.torbjornzetterlund.app.AppController;
+import com.app.torbjornzetterlund.app.Category;
 import com.app.torbjornzetterlund.app.Const;
 import com.app.torbjornzetterlund.app.Post;
 import com.app.torbjornzetterlund.app.PostListAdapter;
@@ -31,15 +33,20 @@ import com.app.torbjornzetterlund.utils.Utils;
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
+import com.google.gson.JsonParseException;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class GridFragment extends Fragment {
 	private static final String TAG = GridFragment.class.getSimpleName();
@@ -55,6 +62,7 @@ public class GridFragment extends Fragment {
 	private ProgressBar pbLoader;
 	private TextView pbNoInternet;
     private TextView pbNoResult;
+    private List<Category> categoriesList = AppController.getInstance().getPrefManger().getCategories();
 
     private AdView mAdView;
 
@@ -217,13 +225,22 @@ public class GridFragment extends Fragment {
         //Toast.makeText(getActivity(),url,Toast.LENGTH_LONG).show();
 
         // making fresh volley request and getting json
-        JsonObjectRequest jsonReq = new JsonObjectRequest(Method.GET, url, null, new Response.Listener<JSONObject>() {
+        JsonArrayRequest jsonReq = new JsonArrayRequest(Method.GET, url, null, new Response.Listener<JSONArray>() {
 
             @Override
-            public void onResponse(JSONObject response) {
+            public void onResponse(JSONArray response) {
                 if (response != null) {
                     try {
-                        if (response.has("error")) {
+                        if (response.length() == 0) {
+                            pbLoader.setVisibility(View.GONE);
+                            listView.setVisibility(View.GONE);
+                            pbNoResult.setVisibility(View.VISIBLE);
+                        }else{
+                            parseJsonArrayFeed(response);
+                        }
+                        mSwipeRefreshLayout.setRefreshing(false);
+
+                        /*if (response.has("error")) {
                             String error = response.getString("error");
                             Toast.makeText(getActivity().getApplicationContext(), error, Toast.LENGTH_LONG).show();
                         }else {
@@ -235,8 +252,9 @@ public class GridFragment extends Fragment {
                                 parseJsonFeed(response);
                             }
                             mSwipeRefreshLayout.setRefreshing(false);
-                        }
-                    }catch (JSONException es) {
+                        }*/
+
+                    }catch (JsonParseException es) {
                         es.printStackTrace();
                         Toast.makeText(getActivity().getApplicationContext(), getString(R.string.unknown_error), Toast.LENGTH_LONG).show();
                     }
@@ -328,6 +346,76 @@ public class GridFragment extends Fragment {
 			pbLoader.setVisibility(View.GONE);
 			listView.setVisibility(View.VISIBLE);
 			
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
+	}
+    /**
+	 * Parsing json response and passing the data to feed view list adapter
+	 * */
+	private void parseJsonArrayFeed(JSONArray response) {
+		try {
+			JSONArray feedArray = response;
+
+			for (int i = 0; i < feedArray.length(); i++) {
+				JSONObject feedObj = (JSONObject) feedArray.get(i);
+
+				Post item = new Post();
+
+				item.setId(feedObj.getInt("id"));
+				item.setName(feedObj.getJSONObject("title").getString("rendered"));
+
+                for(int j =0; j < categoriesList.size(); j++){
+                    if(categoriesList.get(j).equals(feedObj.getJSONArray("categories").get(0).toString())){
+                        item.setCategory(categoriesList.get(j).getTitle());
+                        break;
+                    }
+                }
+
+
+
+				// Image might be null sometimes
+                String image = null;
+                String postFormat = AppController.getInstance().getPrefManger().getPostDisplayFormat();
+                switch (postFormat){
+                    case "large":
+                        image = feedObj.isNull("image_big") ? null : feedObj.getString("image_big");
+                        break;
+                    case "small":
+                        image = feedObj.isNull("image") ? null : feedObj.getString("image");
+                        break;
+                }
+				item.setImge(image);
+				//item.setStatus(feedObj.getString("status"));
+
+
+                try {
+                    SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+                    Date date = formatter.parse(feedObj.getString("date"));
+                    item.setTimeStamp(String.valueOf(date.getTime()));
+                }catch (ParseException e){
+
+                }
+
+                //my item.setProfilePic(feedObj.getString("profilePic"));
+                //my item.setTimeStamp(feedObj.getString("timeStamp"));
+                //my item.setDescription(feedObj.getString("description"));
+
+				// url might be null sometimes
+				String feedUrl = feedObj.isNull("url") ? null : feedObj.getString("url");
+				item.setUrl(feedUrl);
+
+				feedItems.add(item);
+			}
+
+			// notify data changes to list adapter
+			listAdapter.notifyDataSetChanged();
+
+
+			// Hide the loader, make grid visible
+			pbLoader.setVisibility(View.GONE);
+			listView.setVisibility(View.VISIBLE);
+
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}

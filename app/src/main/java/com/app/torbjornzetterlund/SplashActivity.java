@@ -106,18 +106,19 @@ public class SplashActivity extends Activity {
                         // add album to list
                         categories.add(category);
 
-                        // Store categories in shared pref
-                        AppController.getInstance().getPrefManger().storeCategories(categories);
 
-                        // String the main activity
-                        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                        startActivity(intent);
 
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
 
                 }
+                // Store categories in shared pref
+                AppController.getInstance().getPrefManger().storeCategories(categories);
+
+                // String the main activity
+                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                startActivity(intent);
             }
         }, new Response.ErrorListener() {
 

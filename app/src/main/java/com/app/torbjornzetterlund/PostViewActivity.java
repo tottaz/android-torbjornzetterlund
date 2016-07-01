@@ -71,8 +71,12 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.TimeZone;
 
 public class PostViewActivity extends AppCompatActivity {
 
@@ -416,18 +420,19 @@ public class PostViewActivity extends AppCompatActivity {
 
     private void parseJsonFeed(JSONObject feedObj) {
         try {
-            objTitle = feedObj.getString("name");
+            objTitle = feedObj.getJSONObject("title").getString("rendered");
             post_name.setText(Html.fromHtml(objTitle));
 
-            commentsCount = feedObj.getInt("comments");
-            if (feedObj.getString("can_comment") == "no") {
+            //m commentsCount = feedObj.getInt("comments");
+            user_can_comment = false;
+            if (feedObj.getString("comment_status") != "open") {
                 user_can_comment = false;
             }
 
             if (!Const.ShowPostAsWebView) {
                 post_contentHTML.setVisibility(View.GONE);
                 URLImageParser p = new URLImageParser(this, post_content);
-                spannedContent = Html.fromHtml(feedObj.getString("story_content"), p, null);
+                spannedContent = Html.fromHtml(feedObj.getJSONObject("content").getString("rendered"), p, null);
                 post_content.setText(trimTrailingWhitespace(spannedContent));
             } else {
 
@@ -452,8 +457,8 @@ public class PostViewActivity extends AppCompatActivity {
                     e.printStackTrace();
                 }
 
-                post_con = post_con.replace("#title#", feedObj.getString("name"));
-                post_con = post_con.replace("#content#", feedObj.getString("story_content"));
+                post_con = post_con.replace("#title#", feedObj.getJSONObject("title").getString("rendered"));
+                post_con = post_con.replace("#content#", feedObj.getJSONObject("content").getString("rendered"));
                 //post_contentHTML.loadData(post_con, "text/html; charset=utf-8", "utf-8");
                 post_contentHTML.loadDataWithBaseURL(null,
                         post_con,
@@ -462,16 +467,16 @@ public class PostViewActivity extends AppCompatActivity {
                         null);
             }
 
-            if (feedObj.getString("story_content").length() <= 0) {
+            if (feedObj.getJSONObject("content").getString("rendered").length() <= 0) {
                 post_content.setVisibility(View.GONE);
                 post_contentHTML.setVisibility(View.GONE);
             }
 
             post_author.setText(feedObj.getString("author"));
-            getSupportActionBar().setSubtitle("By " + feedObj.getString("author"));
+            //my getSupportActionBar().setSubtitle("By " + feedObj.getString("author"));
 
-            post_image = feedObj.getString("image");
-            objURL = feedObj.getString("url");
+            post_image = feedObj.getString("featured_image_big_url");
+            objURL = feedObj.getString("link");
 
             if (Const.Analytics_ACTIVE) {
                 AnalyticsUtil.sendEvent(this, "Post View", objTitle, objURL);
@@ -490,7 +495,7 @@ public class PostViewActivity extends AppCompatActivity {
             //setShareIntent(shareIntent);
 
             //Comment Button Click
-            Button viewComments = (Button) findViewById(R.id.btnViewComments);
+            /*Button viewComments = (Button) findViewById(R.id.btnViewComments);
             commentsNumber = Utils.formatNumber(commentsCount);
             viewComments.setText(String.format(getString(R.string.comments_button), commentsNumber));
             viewComments.setOnClickListener(new View.OnClickListener() {
@@ -504,7 +509,7 @@ public class PostViewActivity extends AppCompatActivity {
                     i.putExtra("user_can_comment", user_can_comment);
                     startActivityForResult(i, 1000);
                 }
-            });
+            });*/
 
             //Button Click
             Button viewWeb = (Button) findViewById(R.id.btnViewWeb);
@@ -518,14 +523,21 @@ public class PostViewActivity extends AppCompatActivity {
                 });
             }
 
+            try {
+                SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+                formatter.setTimeZone(TimeZone.getTimeZone("GMT"));
+                Date date = formatter.parse(feedObj.getString("date"));
+                // Converting timestamp into x ago format
+                CharSequence timeAgo = DateUtils.getRelativeTimeSpanString(
+                        Long.parseLong(String.valueOf(date.getTime())),
+                        System.currentTimeMillis(), DateUtils.SECOND_IN_MILLIS);
+                timestamp.setText(timeAgo);
+            }catch (ParseException e){
 
-            // Converting timestamp into x ago format
-            CharSequence timeAgo = DateUtils.getRelativeTimeSpanString(
-                    Long.parseLong(feedObj.getString("timeStamp")),
-                    System.currentTimeMillis(), DateUtils.SECOND_IN_MILLIS);
-            timestamp.setText(timeAgo);
+            }
 
-            profilePic.setImageUrl(feedObj.getString("profilePic"), imageLoader);
+
+            profilePic.setImageUrl(feedObj.getString("author_image_thumbnail_url"), imageLoader);
 
 
             loadConfig();

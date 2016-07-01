@@ -21,8 +21,10 @@ import com.android.volley.Request.Method;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
+import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.app.torbjornzetterlund.app.AppController;
+import com.app.torbjornzetterlund.app.Category;
 import com.app.torbjornzetterlund.app.Const;
 import com.app.torbjornzetterlund.app.Post;
 import com.app.torbjornzetterlund.app.PostListAdapter;
@@ -33,15 +35,20 @@ import com.app.torbjornzetterlund.utils.Utils;
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
+import com.google.gson.JsonParseException;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.TimeZone;
 
 public class SearchFragment extends Fragment {
     private static final String TAG = SearchFragment.class.getSimpleName();
@@ -51,6 +58,7 @@ public class SearchFragment extends Fragment {
     private RecyclerView.Adapter listAdapter;
     private LinearLayoutManager mLayoutManager;            // Declaring Layout Manager as a linear layout manager
 
+    private List<Category> categoriesList = AppController.getInstance().getPrefManger().getCategories();
     private List<Post> feedItems;
     private static final String bundleSearchQuery = "searchQuery";
     private String selectedQuery;
@@ -302,30 +310,24 @@ public class SearchFragment extends Fragment {
         }
 
         // making fresh volley request and getting json
-        JsonObjectRequest jsonReq = new JsonObjectRequest(Method.GET, url, null, new Response.Listener<JSONObject>() {
+        JsonArrayRequest jsonReq = new JsonArrayRequest(Method.GET, url, null, new Response.Listener<JSONArray>() {
 
             @Override
-            public void onResponse(JSONObject response) {
+            public void onResponse(JSONArray response) {
                 VolleyLog.d(TAG, "Response: " + response.toString());
                 if (response != null) {
                     isLoadingProgress=false;
                     try {
-                        if (response.has("error")) {
-                            String error = response.getString("error");
-                            Toast.makeText(getActivity().getApplicationContext(), error, Toast.LENGTH_LONG).show();
-                        }else {
-
-                            if (response.isNull("feed")) {
+                            if (response.length() == 0) {
                                 pbLoader.setVisibility(View.GONE);
                                 listView.setVisibility(View.GONE);
                                 pbNoResult.setVisibility(View.VISIBLE);
                             }else{
-                                numOfPages = response.getInt("total_pages");
-                                parseJsonFeed(response);
+                                //numOfPages = response.getInt("total_pages");
+                                parseJsonArrayFeed(response);
                             }
                             mSwipeRefreshLayout.setRefreshing(false);
-                        }
-                    }catch (JSONException es) {
+                    }catch (JsonParseException es) {
                         es.printStackTrace();
                         Toast.makeText(getActivity().getApplicationContext(), getString(R.string.unknown_error), Toast.LENGTH_LONG).show();
                     }
@@ -383,6 +385,70 @@ public class SearchFragment extends Fragment {
 
                 // url might be null sometimes
                 String feedUrl = feedObj.isNull("url") ? null : feedObj.getString("url");
+                item.setUrl(feedUrl);
+
+                feedItems.add(item);
+            }
+
+            // notify data changes to list adapater
+            listAdapter.notifyDataSetChanged();
+            mSwipeRefreshLayout.setRefreshing(false);
+
+            // Hide the loader, make grid visible
+            pbLoader.setVisibility(View.GONE);
+            listView.setVisibility(View.VISIBLE);
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void parseJsonArrayFeed(JSONArray response) {
+        try {
+            JSONArray feedArray = response;
+
+            for (int i = 0; i < feedArray.length(); i++) {
+                JSONObject feedObj = (JSONObject) feedArray.get(i);
+
+                Post item = new Post();
+                item.setId(feedObj.getInt("id"));
+                Log.d(TAG, "ID: " + feedObj.getInt("id"));
+                item.setName(feedObj.getJSONObject("title").getString("rendered"));
+                for(int j =0; j < categoriesList.size(); j++){
+                    if(categoriesList.get(j).getId().equals(feedObj.getJSONArray("categories").get(0).toString())){
+                        item.setCategory(categoriesList.get(j).getTitle());
+                        break;
+                    }
+                }
+
+                // Image might be null sometimes
+                String image = null;
+                String postFormat = AppController.getInstance().getPrefManger().getPostDisplayFormat();
+                switch (postFormat){
+                    case "large":
+                        image = feedObj.isNull("featured_image_big_url") ? null : feedObj.getString("featured_image_big_url");
+                        break;
+                    case "small":
+                        image = feedObj.isNull("featured_image_thumbnail_url") ? null : feedObj.getString("featured_image_thumbnail_url");
+                        break;
+                }
+                item.setImge(image);
+                //item.setStatus(feedObj.getString("status"));
+                try {
+                    SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+                    formatter.setTimeZone(TimeZone.getTimeZone("GMT"));
+                    Date date = formatter.parse(feedObj.getString("date"));
+                    item.setTimeStamp(String.valueOf(date.getTime()));
+                }catch (ParseException e){
+
+                }
+
+                item.setProfilePic(feedObj.getString("author_image_thumbnail_url"));
+
+                item.setDescription(feedObj.getJSONObject("excerpt").getString("rendered"));
+
+                // url might be null sometimes
+                String feedUrl = feedObj.isNull("link") ? null : feedObj.getString("link");
                 item.setUrl(feedUrl);
 
                 feedItems.add(item);

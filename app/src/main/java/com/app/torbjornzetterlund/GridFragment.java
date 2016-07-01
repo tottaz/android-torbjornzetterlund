@@ -372,45 +372,7 @@ public class GridFragment extends Fragment {
                     }
                 }
 
-                //!!! getting image in loop is very bad practice
-                /*JsonObjectRequest mediaReq = new JsonObjectRequest(Method.GET, "https://torbjornzetterlund.com/wp-json/wp/v2/media/6380", null, new Response.Listener<JSONObject>() {
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        if (response != null) {
-                            try {
 
-                            response.getJSONObject("id");
-
-                            }catch (JSONException es) {
-                                es.printStackTrace();
-                                Toast.makeText(getActivity().getApplicationContext(), getString(R.string.unknown_error), Toast.LENGTH_LONG).show();
-                            }
-                        }else{
-                            pbLoader.setVisibility(View.GONE);
-                            listView.setVisibility(View.GONE);
-                            pbNoResult.setVisibility(View.VISIBLE);
-                        }
-                    }
-                }, new Response.ErrorListener() {
-
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        VolleyLog.d(TAG, "Error: " + error.getMessage());
-                    }
-                }){
-
-                    @Override
-                    public Map<String, String> getHeaders() throws AuthFailureError {
-                        HashMap<String, String> headers = new HashMap<String, String>();
-                        headers.put("Content-Type", "application/json");
-//                headers.put("ApiKey", Const.AuthenticationKey);
-                        return headers;
-                    }
-                };
-
-                // Adding request to volley request queue
-                AppController.getInstance().addToRequestQueue(mediaReq);
-                */
 
 
 				// Image might be null sometimes
@@ -418,10 +380,10 @@ public class GridFragment extends Fragment {
                 String postFormat = AppController.getInstance().getPrefManger().getPostDisplayFormat();
                 switch (postFormat){
                     case "large":
-                        image = feedObj.isNull("image_big") ? null : feedObj.getString("image_big");
+                        image = feedObj.isNull("featured_image_big_url") ? null : feedObj.getString("featured_image_big_url");
                         break;
                     case "small":
-                        image = feedObj.isNull("image") ? null : feedObj.getString("image");
+                        image = feedObj.isNull("featured_image_thumbnail_url") ? null : feedObj.getString("featured_image_thumbnail_url");
                         break;
                 }
 				item.setImge(image);
@@ -436,7 +398,7 @@ public class GridFragment extends Fragment {
 
                 }
 
-                //my item.setProfilePic(feedObj.getString("profilePic"));
+                item.setProfilePic(feedObj.getString("author_image_thumbnail_url"));
 
                 item.setDescription(feedObj.getJSONObject("excerpt").getString("rendered"));
 

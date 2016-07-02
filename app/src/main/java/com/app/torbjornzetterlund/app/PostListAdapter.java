@@ -138,7 +138,7 @@ public class PostListAdapter extends RecyclerView.Adapter<PostListAdapter.ViewHo
                     });
             */
         } else {
-            holder.postImageView.setVisibility(View.GONE);
+            //holder.postImageView.setVisibility(View.GONE);
         }
     }
 

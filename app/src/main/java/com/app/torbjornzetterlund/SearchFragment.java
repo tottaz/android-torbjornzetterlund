@@ -38,6 +38,7 @@ import com.app.torbjornzetterlund.utils.Utils;
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.internal.request.StringParcel;
 import com.google.gson.JsonParseException;
 
 import org.json.JSONArray;
@@ -53,6 +54,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.TimeZone;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class SearchFragment extends Fragment {
     private static final String TAG = SearchFragment.class.getSimpleName();
@@ -71,6 +74,8 @@ public class SearchFragment extends Fragment {
     private TextView pbNoResult;
     private int pageNum, numOfPages;
     private boolean isLoadingProgress = true;
+
+    private String next_url = "";
 
     View footerView;
 
@@ -158,6 +163,7 @@ public class SearchFragment extends Fragment {
                 feedItems.clear();
                 listAdapter.notifyDataSetChanged();
                 pageNum = numOfPages = 1;
+                next_url = "";
                 checkInternetConnection();
             }
         });
@@ -220,7 +226,6 @@ public class SearchFragment extends Fragment {
         //On Scroll Event
         listView.addOnScrollListener(new RecyclerView.OnScrollListener() {
 
-
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
@@ -229,15 +234,18 @@ public class SearchFragment extends Fragment {
                 int totalItemCount = mLayoutManager.getItemCount();
                 int firstVisibleItem = mLayoutManager.findFirstVisibleItemPosition();
 
-                if (isLoadingProgress == false){
+                if(dy > 0) //check for scroll down
+                {
+                    if (isLoadingProgress == false) {
 
-                    if(pageNum < numOfPages) {
-                        //load more data
-                        pageNum++;
-                        loadSearchData(pageNum);
-                    }else{
-                        //listView.removeFooterView(footerView);
-                        return;
+                        if ((visibleItemCount + firstVisibleItem) >= totalItemCount) {
+                            if (next_url != "") {
+                                loadSearchData(pageNum);
+                            } else {
+                                //listView.removeFooterView(footerView);
+                                return;
+                            }
+                        }
                     }
                 }
             }
@@ -304,8 +312,13 @@ public class SearchFragment extends Fragment {
         String url = null;
         isLoadingProgress = true;
 
-        url = Const.URL_SEARCH_RESULT.replace("_SEARCH_KEYWORD_", selectedQuery);
-        url = url.replace("_PAGE_NO_", ""+pageNum);
+        if(this.next_url == "") {
+            url = Const.URL_SEARCH_RESULT.replace("_SEARCH_KEYWORD_", selectedQuery);
+            //url = url.replace("_PAGE_NO_", "" + pageNum);
+        }else{
+            url = this.next_url;
+        }
+
         Toast.makeText(getActivity(), url, Toast.LENGTH_LONG);
 
         // Build and Send the Analytics Event.
@@ -362,6 +375,12 @@ public class SearchFragment extends Fragment {
                 try {
                     String jsonString = new String(response.data,
                             HttpHeaderParser.parseCharset(response.headers, PROTOCOL_CHARSET));
+
+                    if(response.headers.get("Link") != null && response.headers.get("Link") != "") {
+                        String links = response.headers.get("Link");
+                        next_url = links.substring(links.lastIndexOf("<") + 1, links.lastIndexOf(">"));
+                    }
+
                     return Response.success(new JSONArray(jsonString),
                             HttpHeaderParser.parseCacheHeaders(response));
                 } catch (UnsupportedEncodingException e) {

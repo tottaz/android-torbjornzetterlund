@@ -96,7 +96,11 @@ public class PostListAdapter extends RecyclerView.Adapter<PostListAdapter.ViewHo
 
         Post item = postItems.get(position);
         holder.name.setText(Html.fromHtml(item.getName()));
-        holder.category.setText(Html.fromHtml(item.getCategory()));
+        try {
+            holder.category.setText(Html.fromHtml(item.getCategory()));
+        }catch (Exception e){
+            holder.category.setText(item.getCategory());
+        }
 
         String postFormat = AppController.getInstance().getPrefManger().getPostDisplayFormat();
         switch (postFormat){

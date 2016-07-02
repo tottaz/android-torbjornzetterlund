@@ -514,7 +514,7 @@ public class PostViewActivity extends AppCompatActivity {
                 post_contentHTML.setVisibility(View.GONE);
             }
             this.getAuthorByID(feedObj.getString("author"));
-            
+
             //my getSupportActionBar().setSubtitle("By " + feedObj.getString("author"));
 
             post_image = feedObj.getString("featured_image_big_url");

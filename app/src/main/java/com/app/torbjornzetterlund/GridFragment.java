@@ -15,10 +15,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
+import com.android.volley.NetworkResponse;
+import com.android.volley.ParseError;
 import com.android.volley.Request.Method;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
+import com.android.volley.toolbox.HttpHeaderParser;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.app.torbjornzetterlund.app.AppController;
@@ -39,6 +42,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.UnsupportedEncodingException;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -66,6 +70,9 @@ public class GridFragment extends Fragment {
     private List<Category> categoriesList = AppController.getInstance().getPrefManger().getCategories();
 
     private AdView mAdView;
+    private boolean isLoadingProgress = true;
+
+    private String next_url = "";
 
 	
 	public GridFragment() {
@@ -129,7 +136,7 @@ public class GridFragment extends Fragment {
 		feedItems = new ArrayList<Post>();
 		listAdapter = new PostListAdapter(getActivity(), feedItems);
 		listView.setAdapter(listAdapter);
-        LinearLayoutManager mLayoutManager = new LinearLayoutManager(getActivity());                 // Creating a layout Manager
+        final LinearLayoutManager mLayoutManager = new LinearLayoutManager(getActivity());                 // Creating a layout Manager
         if(Const.forceRTL==Boolean.TRUE) {
             mLayoutManager.setReverseLayout(true);
             mLayoutManager.setStackFromEnd(true);
@@ -160,6 +167,7 @@ public class GridFragment extends Fragment {
                 feedItems.clear();
                 listAdapter.notifyDataSetChanged();
                 checkInternetConnection();
+                next_url = "";
             }
         });
 
@@ -189,8 +197,37 @@ public class GridFragment extends Fragment {
         };
         listView.addOnItemTouchListener(new RecyclerItemClickListener(getActivity(), itemClickListener));
 
+        //On Scroll Event
+        listView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+
+                int visibleItemCount = recyclerView.getChildCount();
+                int totalItemCount = mLayoutManager.getItemCount();
+                int firstVisibleItem = mLayoutManager.findFirstVisibleItemPosition();
+
+                if(dy > 0) //check for scroll down
+                {
+                    if (isLoadingProgress == false) {
+
+                        if ((visibleItemCount + firstVisibleItem) >= totalItemCount) {
+                            if (next_url != "") {
+                                loadCategoriesData();
+                            } else {
+                                return;
+                            }
+                        }
+                    }
+                }
+            }
+        });
+
 		return rootView;
 	}
+
+
 
     private void checkInternetConnection (){
 		// creating connection detector class instance
@@ -208,20 +245,25 @@ public class GridFragment extends Fragment {
 
     private void loadCategoriesData(){
 		String url;
+        isLoadingProgress = true;
 
-		if (selectedCategoryId == null) {
-			url = Const.URL_RECENTLY_ADDED;
-            // Build and Send the Analytics Event.
-            if (Const.Analytics_ACTIVE) {
-                AnalyticsUtil.sendEvent(this.getActivity(), getString(R.string.recently_added), "View", "");
+        if(next_url == "") {
+            if (selectedCategoryId == null) {
+                url = Const.URL_RECENTLY_ADDED;
+                // Build and Send the Analytics Event.
+                if (Const.Analytics_ACTIVE) {
+                    AnalyticsUtil.sendEvent(this.getActivity(), getString(R.string.recently_added), "View", "");
+                }
+            } else {
+                url = Const.URL_CATEGORY_POST.replace("_CAT_ID_", selectedCategoryId);
+                // Build and Send the Analytics Event.
+                if (Const.Analytics_ACTIVE) {
+                    AnalyticsUtil.sendEvent(this.getActivity(), selectedCategoryName, "View", "");
+                }
             }
-		} else {
-			url = Const.URL_CATEGORY_POST.replace("_CAT_ID_", selectedCategoryId);
-            // Build and Send the Analytics Event.
-            if (Const.Analytics_ACTIVE) {
-                AnalyticsUtil.sendEvent(this.getActivity(), selectedCategoryName, "View", "");
-            }
-		}
+        }else{
+            url = next_url;
+        }
 
         //Toast.makeText(getActivity(),url,Toast.LENGTH_LONG).show();
 
@@ -231,6 +273,7 @@ public class GridFragment extends Fragment {
             @Override
             public void onResponse(JSONArray response) {
                 if (response != null) {
+                    isLoadingProgress=false;
                     try {
                         if (response.length() == 0) {
                             pbLoader.setVisibility(View.GONE);
@@ -279,6 +322,25 @@ public class GridFragment extends Fragment {
                 headers.put("Content-Type", "application/json");
 //                headers.put("ApiKey", Const.AuthenticationKey);
                 return headers;
+            }
+            @Override
+            protected Response<JSONArray> parseNetworkResponse(NetworkResponse response) {
+                try {
+                    String jsonString = new String(response.data,
+                            HttpHeaderParser.parseCharset(response.headers, PROTOCOL_CHARSET));
+
+                    if(response.headers.get("Link") != null && response.headers.get("Link") != "") {
+                        String links = response.headers.get("Link");
+                        next_url = links.substring(links.lastIndexOf("<") + 1, links.lastIndexOf(">"));
+                    }
+
+                    return Response.success(new JSONArray(jsonString),
+                            HttpHeaderParser.parseCacheHeaders(response));
+                } catch (UnsupportedEncodingException e) {
+                    return Response.error(new ParseError(e));
+                } catch (JSONException je) {
+                    return Response.error(new ParseError(je));
+                }
             }
         };
 

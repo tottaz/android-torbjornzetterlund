@@ -15,6 +15,7 @@ public class Const {
 
     public static final String URL_BLOG_CATEGORIES   = "http://www.torbjornzetterlund.com/wp-json/wp/v2/categories?per_page=30";
     public static final String URL_RECENTLY_ADDED    = "http://www.torbjornzetterlund.com/wp-json/wp/v2/posts/";
+    public static final String URL_AUTHOR    = "https://torbjornzetterlund.com/wp-json/wp/v2/users/";
     //    public static final String URL_RECENTLY_ADDED    = "http://www.torbjornzetterlund.com/api/get_recent_posts/";
     public static final String URL_CATEGORY_POST	 = "http://torbjornzetterlund.com/wp-json/wp/v2/posts?categories=_CAT_ID_";
     public static final String URL_STORY_PAGE	 	 = "http://torbjornzetterlund.com/wp-json/wp/v2/posts/_STORY_ID_/";

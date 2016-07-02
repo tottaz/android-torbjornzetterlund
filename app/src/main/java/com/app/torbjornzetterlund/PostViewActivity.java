@@ -416,6 +416,48 @@ public class PostViewActivity extends AppCompatActivity {
         };
         // Adding request to volley request queue
         AppController.getInstance().addToRequestQueue(jsonReq);
+
+    }
+
+    private void getAuthorByID(String id){
+        //Requesting The Story
+        String url = null;
+        url = Const.URL_AUTHOR + id;
+        //Log.i(TAG, "Taging: " + url);
+        // making fresh volley request and getting json
+        JsonObjectRequest jsonReq = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
+
+            @Override
+            public void onResponse(JSONObject response) {
+                //Log.i(TAG, "Taging: " + response.toString());
+                VolleyLog.d(TAG, "Response: " + response.toString());
+                if (response != null) {
+                    try {
+                        post_author.setText(response.getString("name"));
+                    } catch (JSONException es) {
+                        es.printStackTrace();
+                        Toast.makeText(getApplicationContext(), es.getMessage(), Toast.LENGTH_LONG).show();
+                    }
+                }
+            }
+        }, new Response.ErrorListener() {
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                VolleyLog.d(TAG, "Error: " + error.getMessage());
+            }
+        }) {
+            /** Passing some request headers **/
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                HashMap<String, String> headers = new HashMap<String, String>();
+                headers.put("Content-Type", "application/json");
+//                headers.put("ApiKey", Const.AuthenticationKey);
+                return headers;
+            }
+        };
+        // Adding request to volley request queue
+        AppController.getInstance().addToRequestQueue(jsonReq);
     }
 
     private void parseJsonFeed(JSONObject feedObj) {
@@ -471,8 +513,8 @@ public class PostViewActivity extends AppCompatActivity {
                 post_content.setVisibility(View.GONE);
                 post_contentHTML.setVisibility(View.GONE);
             }
-
-            post_author.setText(feedObj.getString("author"));
+            this.getAuthorByID(feedObj.getString("author"));
+            
             //my getSupportActionBar().setSubtitle("By " + feedObj.getString("author"));
 
             post_image = feedObj.getString("featured_image_big_url");

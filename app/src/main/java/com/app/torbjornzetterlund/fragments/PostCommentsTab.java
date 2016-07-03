@@ -123,9 +123,9 @@ public class PostCommentsTab  extends Fragment {
                             @Override
                             protected Map<String, String> getParams() {
                                 Map<String, String> params = new HashMap<String, String>();
-                                params.put("comment_name", name);
-                                params.put("comment_email", email);
-                                params.put("post_comment", comment);
+                                params.put("author_name", name);
+                                params.put("author_email", email);
+                                params.put("content", comment);
                                 return params;
                             }
 

@@ -21,6 +21,7 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
+import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.app.torbjornzetterlund.R;
 import com.app.torbjornzetterlund.app.AppController;
@@ -32,15 +33,20 @@ import com.app.torbjornzetterlund.utils.ConnectionDetector;
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
+import com.google.gson.JsonParseException;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.TimeZone;
 
 public class ViewCommentsTab extends Fragment {
     private static final String TAG = ViewCommentsTab.class.getSimpleName();
@@ -182,31 +188,19 @@ public class ViewCommentsTab extends Fragment {
         }
 
         // making fresh volley request and getting json
-        JsonObjectRequest jsonReq = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
+        JsonArrayRequest jsonReq = new JsonArrayRequest(Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
 
             @Override
-            public void onResponse(JSONObject response) {
+            public void onResponse(JSONArray response) {
                 //VolleyLog.d(TAG, "Response: " + response.toString());
-                if (response != null) {
+                if (response.length() != 0) {
                     isLoadingProgress=false;
                     try {
-                        if (response.has("error")) {
-                            String error = response.getString("error");
-                            Toast.makeText(getActivity().getApplicationContext(), error, Toast.LENGTH_LONG).show();
-                        }else {
-
-                            if (response.isNull("feed")) {
-                                pbLoader.setVisibility(View.GONE);
-                                listView.setVisibility(View.GONE);
-                                pbNoResult.setVisibility(View.VISIBLE);
-                            }else{
-                                numOfPages = response.getInt("total_pages");
-                                Log.d(TAG, response.toString());
-                                parseJsonFeed(response);
-                            }
-                            mSwipeRefreshLayout.setRefreshing(false);
-                        }
-                    }catch (JSONException es) {
+                        //numOfPages = response.getInt("total_pages");
+                        Log.d(TAG, response.toString());
+                        parseJsonArrayFeed(response);
+                        mSwipeRefreshLayout.setRefreshing(false);
+                    }catch (JsonParseException es) {
                         es.printStackTrace();
                         Toast.makeText(getActivity().getApplicationContext(), getString(R.string.unknown_error), Toast.LENGTH_LONG).show();
                     }
@@ -258,6 +252,48 @@ public class ViewCommentsTab extends Fragment {
                 item.setProfilePic(image);
                 item.setTimeStamp(feedObj.getString("comment_date"));
                 item.setContent(feedObj.getString("comment_content"));
+                feedItems.add(item);
+            }
+
+            // notify data changes to list adapater
+            listAdapter.notifyDataSetChanged();
+            mSwipeRefreshLayout.setRefreshing(false);
+
+            // Hide the loader, make grid visible
+            pbLoader.setVisibility(View.GONE);
+            listView.setVisibility(View.VISIBLE);
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+    private void parseJsonArrayFeed(JSONArray response) {
+        try {
+            JSONArray feedArray = response;
+
+            for (int i = 0; i < feedArray.length(); i++) {
+                JSONObject feedObj = (JSONObject) feedArray.get(i);
+
+                Comment item = new Comment();
+                item.setId(feedObj.getInt("id"));
+                Log.d(TAG, "ID: " + feedObj.getInt("id"));
+                item.setAuthor(feedObj.getString("author_name"));
+                //item.setAuthorEmail(feedObj.getString("author_email"));
+
+                //item.setStatus(feedObj.getString("status"));
+                String image = feedObj.getJSONObject("author_avatar_urls").getString("96") == null ? null : feedObj.getJSONObject("author_avatar_urls").getString("96");
+                item.setProfilePic(image);
+
+                try {
+                    SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+                    formatter.setTimeZone(TimeZone.getTimeZone("GMT"));
+                    Date date = formatter.parse(feedObj.getString("date"));
+                    item.setTimeStamp(String.valueOf(date.getTime()));
+                }catch (ParseException e){
+
+                }
+
+                item.setContent(feedObj.getJSONObject("content").getString("rendered"));
                 feedItems.add(item);
             }
 

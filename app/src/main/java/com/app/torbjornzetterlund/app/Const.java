@@ -21,7 +21,7 @@ public class Const {
     public static final String URL_STORY_PAGE	 	 = "http://torbjornzetterlund.com/wp-json/wp/v2/posts/_STORY_ID_/";
     public static final String URL_SEARCH_RESULT	 = "http://www.torbjornzetterlund.com/wp-json/wp/v2/posts?search=_SEARCH_KEYWORD_";
     public static final String URL_COMMENTS_PAGE	    = "http://torbjornzetterlund.com/wp-json/wp/v2/comments?post_comment/_STORY_ID_/";
-    public static final String URL_COMMENTS_LIST_PAGE   = "http://torbjornzetterlund.com/wp-json/wp/v2/comments?post/_STORY_ID_/_PAGE_NO_";
+    public static final String URL_COMMENTS_LIST_PAGE   = "http://torbjornzetterlund.com/wp-json/wp/v2/comments?post=_STORY_ID_";
 
     public static final String PACKAGE_INTENT = "com.app.torbjornzetterlund.NEW_UPDATE";
     public static final boolean ADMOBService_ACTIVE         = true;

@@ -9,7 +9,6 @@
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-
         android:layout_marginLeft="@dimen/post_item_margin"
         android:layout_marginRight="@dimen/post_item_margin"
         android:layout_marginTop="@dimen/post_item_margin"
@@ -17,16 +16,22 @@
         android:orientation="vertical"
         android:paddingBottom="@dimen/spacing_xsmall">
 
-
-        <ImageView
-            android:id="@+id/profilePic"
+        <RelativeLayout
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:background="@color/white"
-            android:scaleType="centerCrop"
-            android:visibility="visible"
-            android:contentDescription="" />
-
+            android:orientation="vertical"
+            android:paddingLeft="@dimen/spacing"
+            android:paddingRight="@dimen/spacing"
+            android:paddingTop="@dimen/spacing">
+            <ImageView
+                android:id="@+id/profilePic"
+                android:layout_width="96dp"
+                android:layout_height="96dp"
+                android:background="@color/white"
+                android:scaleType="centerCrop"
+                android:visibility="visible"
+                android:contentDescription="" />
+        </RelativeLayout>
 
         <RelativeLayout
             android:layout_width="fill_parent"

@@ -465,9 +465,9 @@ public class PostViewActivity extends AppCompatActivity {
             objTitle = feedObj.getJSONObject("title").getString("rendered");
             post_name.setText(Html.fromHtml(objTitle));
 
-            //m commentsCount = feedObj.getInt("comments");
-            user_can_comment = false;
-            if (feedObj.getString("comment_status") != "open") {
+            commentsCount = feedObj.getInt("comments_count");
+
+            if (!feedObj.getString("comment_status").equals("open")) {
                 user_can_comment = false;
             }
 
@@ -537,7 +537,7 @@ public class PostViewActivity extends AppCompatActivity {
             //setShareIntent(shareIntent);
 
             //Comment Button Click
-            /*Button viewComments = (Button) findViewById(R.id.btnViewComments);
+            Button viewComments = (Button) findViewById(R.id.btnViewComments);
             commentsNumber = Utils.formatNumber(commentsCount);
             viewComments.setText(String.format(getString(R.string.comments_button), commentsNumber));
             viewComments.setOnClickListener(new View.OnClickListener() {
@@ -551,7 +551,7 @@ public class PostViewActivity extends AppCompatActivity {
                     i.putExtra("user_can_comment", user_can_comment);
                     startActivityForResult(i, 1000);
                 }
-            });*/
+            });
 
             //Button Click
             Button viewWeb = (Button) findViewById(R.id.btnViewWeb);

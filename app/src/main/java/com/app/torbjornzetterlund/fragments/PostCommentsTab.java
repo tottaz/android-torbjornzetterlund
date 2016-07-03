@@ -81,7 +81,7 @@ public class PostCommentsTab  extends Fragment {
 
                         //Requesting The Story
                         String url = null;
-                        url = Const.URL_COMMENTS_PAGE.replace("_STORY_ID_", post_id.replace("P", ""));
+                        url = Const.URL_COMMENTS_LIST_PAGE.replace("_STORY_ID_", post_id.replace("P", ""));
 
                         // making fresh volley request and getting json
                         StringRequest sr = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {

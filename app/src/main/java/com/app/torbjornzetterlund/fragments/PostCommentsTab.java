@@ -117,6 +117,9 @@ public class PostCommentsTab  extends Fragment {
                             @Override
                             public void onErrorResponse(VolleyError error) {
                                 pDialog.hide();
+                                Utils.showAlertDialog(getActivity(), "Response Error", error.getMessage());
+                                //pDialog.setMessage(error.getMessage());
+                               // pDialog.hide();
                                 //mPostCommentResponse.requestEndedWithError(error);
                             }
                         }) {

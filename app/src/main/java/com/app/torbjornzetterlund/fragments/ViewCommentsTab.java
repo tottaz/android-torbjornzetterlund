@@ -17,10 +17,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
+import com.android.volley.NetworkResponse;
+import com.android.volley.ParseError;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
+import com.android.volley.toolbox.HttpHeaderParser;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.app.torbjornzetterlund.R;
@@ -39,6 +42,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.UnsupportedEncodingException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -68,6 +72,7 @@ public class ViewCommentsTab extends Fragment {
 
     Boolean isInternetPresent = false;
     ConnectionDetector cd;
+    private String next_url = "";
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -133,7 +138,7 @@ public class ViewCommentsTab extends Fragment {
 
 
         //On Scroll Event
-        /*listView.setOnScrollListener(new RecyclerView.OnScrollListener() {
+        listView.addOnScrollListener(new RecyclerView.OnScrollListener() {
 
 
             @Override
@@ -143,20 +148,22 @@ public class ViewCommentsTab extends Fragment {
                 int visibleItemCount = recyclerView.getChildCount();
                 int totalItemCount = mLayoutManager.getItemCount();
                 int firstVisibleItem = mLayoutManager.findFirstVisibleItemPosition();
-
-                if (isLoadingProgress == false){
-
-                    if(pageNum < numOfPages) {
-                        //load more data
-                        pageNum++;
-                        loadSearchData(pageNum);
-                    }else{
-                        //listView.removeFooterView(footerView);
-                        return;
+                if(dy > 0) //check for scroll down
+                {
+                    if (isLoadingProgress == false) {
+                        if ((visibleItemCount + firstVisibleItem) >= totalItemCount) {
+                            if (next_url != "") {
+                                //load more data
+                                loadSearchData(pageNum);
+                            } else {
+                                //listView.removeFooterView(footerView);
+                                return;
+                            }
+                        }
                     }
                 }
             }
-        });*/
+        });
         return rootView;
     }
 
@@ -178,8 +185,13 @@ public class ViewCommentsTab extends Fragment {
         String url = null;
         isLoadingProgress = true;
 
-        url = Const.URL_COMMENTS_LIST_PAGE.replace("_STORY_ID_", post_id);
-        url = url.replace("_PAGE_NO_", ""+pageNum);
+        if(this.next_url == "") {
+            url = Const.URL_COMMENTS_LIST_PAGE.replace("_STORY_ID_", post_id);
+            url = url.replace("_PAGE_NO_", ""+pageNum);
+        }else{
+            url = this.next_url;
+        }
+
         Toast.makeText(getActivity(), url, Toast.LENGTH_LONG);
 
         // Build and Send the Analytics Event.
@@ -224,6 +236,31 @@ public class ViewCommentsTab extends Fragment {
                 headers.put("Content-Type", "application/json");
 //                headers.put("ApiKey", Const.AuthenticationKey);
                 return headers;
+            }
+
+            @Override
+            protected Response<JSONArray> parseNetworkResponse(NetworkResponse response) {
+                try {
+                    String jsonString = new String(response.data,
+                            HttpHeaderParser.parseCharset(response.headers, PROTOCOL_CHARSET));
+
+                    if(response.headers.get("Link") != null && response.headers.get("Link") != "") {
+                        String links = response.headers.get("Link");
+                        int next_idx = links.lastIndexOf("next");
+                        if(next_idx > 0) {
+                            next_url = links.substring(links.lastIndexOf("<") + 1, links.lastIndexOf(">"));
+                        }else{
+                            next_url = "";
+                        }
+                    }
+
+                    return Response.success(new JSONArray(jsonString),
+                            HttpHeaderParser.parseCacheHeaders(response));
+                } catch (UnsupportedEncodingException e) {
+                    return Response.error(new ParseError(e));
+                } catch (JSONException je) {
+                    return Response.error(new ParseError(je));
+                }
             }
         };
 

@@ -568,7 +568,7 @@ public class PostViewActivity extends AppCompatActivity {
             try {
                 SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
                 formatter.setTimeZone(TimeZone.getTimeZone("GMT"));
-                Date date = formatter.parse(feedObj.getString("date"));
+                Date date = formatter.parse(feedObj.getString("date_gmt"));
                 // Converting timestamp into x ago format
                 CharSequence timeAgo = DateUtils.getRelativeTimeSpanString(
                         Long.parseLong(String.valueOf(date.getTime())),

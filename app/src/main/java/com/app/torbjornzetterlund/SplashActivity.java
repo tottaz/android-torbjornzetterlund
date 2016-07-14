@@ -119,6 +119,8 @@ public class SplashActivity extends Activity {
                 // String the main activity
                 Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                 startActivity(intent);
+                // closing spalsh activity
+                finish();
             }
         }, new Response.ErrorListener() {
 

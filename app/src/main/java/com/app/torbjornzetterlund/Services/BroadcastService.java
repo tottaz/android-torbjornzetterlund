@@ -186,6 +186,7 @@ public class BroadcastService extends Service {
                     }
              //   }
             } catch (JSONException e) {
+                Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
                 e.printStackTrace();
             }
             //stopSelf();

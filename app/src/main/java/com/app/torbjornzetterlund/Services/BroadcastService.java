@@ -14,6 +14,7 @@ import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.app.torbjornzetterlund.MainActivity;
 import com.app.torbjornzetterlund.R;
@@ -118,10 +119,10 @@ public class BroadcastService extends Service {
 
                     String url = Const.URL_RECENTLY_ADDED;
                     // making fresh volley request and getting json
-                    JsonObjectRequest jsonReq = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
+                    JsonArrayRequest jsonReq = new JsonArrayRequest(Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
 
                         @Override
-                        public void onResponse(JSONObject response) {
+                        public void onResponse(JSONArray response) {
                             if (response != null) {
                                 parseJsonFeed(response);
                             }
@@ -154,18 +155,18 @@ public class BroadcastService extends Service {
 
 
 
-        private void parseJsonFeed(JSONObject response) {
+        private void parseJsonFeed(JSONArray response) {
             Integer lastId = AppController.getInstance().getPrefManger().getLastID();
             Boolean hasNewUpdate = false;
             Integer mostRecentUpdate = 0;
             Integer numOfUpdate = 0;
             //Toast.makeText(getApplicationContext(),"Requested",Toast.LENGTH_LONG).show();
             try {
-                if (response.has("error")) {
-                    String error = response.getString("error");
-                    Toast.makeText(getApplicationContext(), error, Toast.LENGTH_LONG).show();
-                }else {
-                    JSONArray feedArray = response.getJSONArray("feed");
+//                if (response.has("error")) {
+//                    String error = response.getString("error");
+//                    Toast.makeText(getApplicationContext(), error, Toast.LENGTH_LONG).show();
+//                }else {
+                    JSONArray feedArray = response;//.getJSONArray("feed");
                     for (int i = 0; i < feedArray.length(); i++) {
                         JSONObject feedObj = (JSONObject) feedArray.get(i);
                         Integer feedUpdate = feedObj.getInt("id");
@@ -183,7 +184,7 @@ public class BroadcastService extends Service {
                             sendBroadcastMsg(true);
                         }
                     }
-                }
+             //   }
             } catch (JSONException e) {
                 e.printStackTrace();
             }

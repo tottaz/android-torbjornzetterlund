@@ -2,6 +2,7 @@ package com.app.torbjornzetterlund;
 
 //import android.app.Activity;
 
+import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.SearchManager;
@@ -12,6 +13,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
@@ -265,6 +267,7 @@ public class MainActivity extends AppCompatActivity implements NavAdapter.Callba
 
     @Override
     public void onBackPressed() {
+        final Activity thisActivity= this;
         new AlertDialog.Builder(this, R.style.AlertDialogCustom_Destructive)
             .setTitle(R.string.exit_title)
             .setMessage(R.string.exit_message)
@@ -272,7 +275,7 @@ public class MainActivity extends AppCompatActivity implements NavAdapter.Callba
             .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialogInterface, int i) {
-                    finish();
+                    ActivityCompat.finishAffinity(thisActivity);
                 }
             }).create().show();
     }

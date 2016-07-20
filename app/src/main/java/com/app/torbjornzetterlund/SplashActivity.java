@@ -6,7 +6,9 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.widget.TextView;
@@ -80,7 +82,7 @@ public class SplashActivity extends Activity {
     public void loadCategoriesData(){
         // Categories request to get list of featured categories
         String url = Const.URL_BLOG_CATEGORIES;
-
+        final Activity currentActivity = this;
         // Preparing volley's json object request
         JsonArrayRequest jsonArrReq = new JsonArrayRequest(url, new Response.Listener<JSONArray>() {
 
@@ -120,7 +122,7 @@ public class SplashActivity extends Activity {
                 Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                 startActivity(intent);
                 // closing spalsh activity
-                finish();
+                ActivityCompat.finishAffinity(currentActivity);
             }
         }, new Response.ErrorListener() {
 

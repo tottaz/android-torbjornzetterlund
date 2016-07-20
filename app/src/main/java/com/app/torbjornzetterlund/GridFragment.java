@@ -166,8 +166,9 @@ public class GridFragment extends Fragment {
                 //refreshItems();
                 feedItems.clear();
                 listAdapter.notifyDataSetChanged();
-                checkInternetConnection();
                 next_url = "";
+                checkInternetConnection();
+
             }
         });
 

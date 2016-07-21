@@ -113,7 +113,6 @@ public class MainActivity extends AppCompatActivity implements NavAdapter.Callba
         final Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-
         //Listing All Fetched Categories
         navDrawerItems = new ArrayList<NavDrawerItem>();
         // Getting the albums from shared preferences
@@ -254,7 +253,6 @@ public class MainActivity extends AppCompatActivity implements NavAdapter.Callba
 
     @Override
     protected void onDestroy() {
-        // TODO Auto-generated method stub
         unregisterReceiver(this.myBroadCast);
         super.onDestroy();
     }
@@ -357,8 +355,6 @@ public class MainActivity extends AppCompatActivity implements NavAdapter.Callba
         displayView(position);
         mAdapter.notifyDataSetChanged();
     }
-
-
 
     /////Initializing Service
     private void startService() {

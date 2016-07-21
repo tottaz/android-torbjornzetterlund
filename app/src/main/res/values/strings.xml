@@ -22,15 +22,6 @@
 
     <string name="unit_id_interstitial" translatable="false">ca-app-pub-3016609432941096/8356996365</string>
 
-    <!-- Set the Parse Client Key -->
-    <string name="parse_client_key">RbHU0VZzIhOVbdLnuHtqFAIWfl5YNTOrCACEQPBi</string>
-
-    <!-- Interstitial Parse Application Id -->
-    <string name="parse_application_id">LKvLLNuCrOr8F7rg2OZAI6wKtIjPqDX4OVuj3Ekr</string>
-
-    <!-- Interstitial adbuddiz  -->
-    <string name="adbuddiz_publisher_key">f8c0ba05-538e-4113-9d2e-4cce91f5e5ea</string>
-
     <!-- Interstitial adbuddiz  -->
     <string name="google_analytics">UA-25739408-11</string>
 

@@ -14,7 +14,7 @@ import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.JsonArrayRequest;
 import com.app.torbjornzetterlund.MainActivity;
 import com.app.torbjornzetterlund.R;
 import com.app.torbjornzetterlund.app.AppController;
@@ -44,30 +44,29 @@ public class BroadcastService extends Service {
         return null;
     }
 
-
     @Override
     public void onCreate() {
 
         // TODO Auto-generated method stub
         super.onCreate();
-            ConnectionDetector cd = new ConnectionDetector(getApplicationContext());
-            Boolean isInternetPresent = false;
-            isInternetPresent = cd.isConnectingToInternet();
-            if (isInternetPresent) {
+        ConnectionDetector cd = new ConnectionDetector(getApplicationContext());
+        Boolean isInternetPresent = false;
+        isInternetPresent = cd.isConnectingToInternet();
+        if (isInternetPresent) {
 
-                // cancel if already existed
-                if(mTimer != null) {
-                    mTimer.cancel();
-                } else {
-                    // recreate new
-                    mTimer = new Timer();
-                }
-                // schedule task
-                mTimer.scheduleAtFixedRate(new TimeDisplayTimerTask(), 0, Const.UpdateCheckIn);
-
+            // cancel if already existed
+            if(mTimer != null) {
+                mTimer.cancel();
             } else {
-                stopSelf();
+                // recreate new
+                mTimer = new Timer();
             }
+            // schedule task
+            mTimer.scheduleAtFixedRate(new TimeDisplayTimerTask(), 0, Const.UpdateCheckIn);
+
+        } else {
+            stopSelf();
+        }
     }
 
     @Override
@@ -106,8 +105,6 @@ public class BroadcastService extends Service {
         this.sendBroadcast(i);
     }
 
-
-
     class TimeDisplayTimerTask extends TimerTask {
         @Override
         public void run() {
@@ -118,10 +115,10 @@ public class BroadcastService extends Service {
 
                     String url = Const.URL_RECENTLY_ADDED;
                     // making fresh volley request and getting json
-                    JsonObjectRequest jsonReq = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
+                    JsonArrayRequest jsonReq = new JsonArrayRequest(Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
 
                         @Override
-                        public void onResponse(JSONObject response) {
+                        public void onResponse(JSONArray response) {
                             if (response != null) {
                                 parseJsonFeed(response);
                             }
@@ -152,44 +149,42 @@ public class BroadcastService extends Service {
             });
         }
 
-
-
-        private void parseJsonFeed(JSONObject response) {
+        private void parseJsonFeed(JSONArray response) {
             Integer lastId = AppController.getInstance().getPrefManger().getLastID();
             Boolean hasNewUpdate = false;
             Integer mostRecentUpdate = 0;
             Integer numOfUpdate = 0;
             //Toast.makeText(getApplicationContext(),"Requested",Toast.LENGTH_LONG).show();
             try {
-                if (response.has("error")) {
-                    String error = response.getString("error");
-                    Toast.makeText(getApplicationContext(), error, Toast.LENGTH_LONG).show();
-                }else {
-                    JSONArray feedArray = response.getJSONArray("feed");
-                    for (int i = 0; i < feedArray.length(); i++) {
-                        JSONObject feedObj = (JSONObject) feedArray.get(i);
-                        Integer feedUpdate = feedObj.getInt("id");
-                        if (feedUpdate > lastId) {
-                            numOfUpdate++;
-                            if (hasNewUpdate == false) hasNewUpdate = true;
-                            if (mostRecentUpdate < feedUpdate) mostRecentUpdate = feedUpdate;
-                        }
-                    }
-
-                    if (hasNewUpdate) {
-                        AppController.getInstance().getPrefManger().setLastID(mostRecentUpdate);
-                        if (AppController.getInstance().getPrefManger().notificationEnabled()) {
-                            PushNotification(getString(R.string.notification_title), String.format(getString(R.string.notification_msg), numOfUpdate));
-                            sendBroadcastMsg(true);
-                        }
+//                if (response.has("error")) {
+//                    String error = response.getString("error");
+//                    Toast.makeText(getApplicationContext(), error, Toast.LENGTH_LONG).show();
+//                }else {
+                JSONArray feedArray = response;//.getJSONArray("feed");
+                for (int i = 0; i < feedArray.length(); i++) {
+                    JSONObject feedObj = (JSONObject) feedArray.get(i);
+                    Integer feedUpdate = feedObj.getInt("id");
+                    if (feedUpdate > lastId) {
+                        numOfUpdate++;
+                        if (hasNewUpdate == false) hasNewUpdate = true;
+                        if (mostRecentUpdate < feedUpdate) mostRecentUpdate = feedUpdate;
                     }
                 }
+
+                if (hasNewUpdate) {
+                    AppController.getInstance().getPrefManger().setLastID(mostRecentUpdate);
+                    if (AppController.getInstance().getPrefManger().notificationEnabled()) {
+                        PushNotification(getString(R.string.notification_title), String.format(getString(R.string.notification_msg), numOfUpdate));
+                        sendBroadcastMsg(true);
+                    }
+                }
+                //   }
             } catch (JSONException e) {
+                Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
                 e.printStackTrace();
             }
             //stopSelf();
         }
-
 
         private String getDateTime() {
             // get date time in custom format

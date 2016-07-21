@@ -119,6 +119,8 @@ public class SplashActivity extends Activity {
                 // String the main activity
                 Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                 startActivity(intent);
+                // closing spalsh activity
+                finish();
             }
         }, new Response.ErrorListener() {
 
@@ -130,7 +132,7 @@ public class SplashActivity extends Activity {
                 Toast.makeText(getApplicationContext(), getString(R.string.server_unavailable), Toast.LENGTH_LONG).show();
                 //Toast.makeText(getApplicationContext(), "System Error: " + error.getMessage(), Toast.LENGTH_LONG).show();
 
-                // closing spalsh activity
+                // closing splash activity
                 finish();
             }
         }) {

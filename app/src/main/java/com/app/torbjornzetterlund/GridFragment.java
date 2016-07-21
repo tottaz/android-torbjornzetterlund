@@ -23,7 +23,6 @@ import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.HttpHeaderParser;
 import com.android.volley.toolbox.JsonArrayRequest;
-import com.android.volley.toolbox.JsonObjectRequest;
 import com.app.torbjornzetterlund.app.AppController;
 import com.app.torbjornzetterlund.app.Category;
 import com.app.torbjornzetterlund.app.Const;
@@ -44,13 +43,12 @@ import org.json.JSONObject;
 
 import java.io.UnsupportedEncodingException;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.TimeZone;
 
 public class GridFragment extends Fragment {
@@ -166,8 +164,9 @@ public class GridFragment extends Fragment {
                 //refreshItems();
                 feedItems.clear();
                 listAdapter.notifyDataSetChanged();
-                checkInternetConnection();
+
                 next_url = "";
+                checkInternetConnection();
             }
         });
 

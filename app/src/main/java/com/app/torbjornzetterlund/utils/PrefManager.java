@@ -1,18 +1,17 @@
 package com.app.torbjornzetterlund.utils;
 
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
+
 import com.app.torbjornzetterlund.app.Category;
+import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
-
-import android.content.Context;
-import android.content.SharedPreferences;
-import android.content.SharedPreferences.Editor;
-
-import com.google.gson.Gson;
 
 public class PrefManager {
 	private static final String TAG = PrefManager.class.getSimpleName();
@@ -30,16 +29,14 @@ public class PrefManager {
 	int PRIVATE_MODE = 0;
 
 	// Sharedpref file name
-	private static final String PREF_NAME = "BlogPress";
+	private static final String PREF_NAME = "Wordpress";
 
 	// Gallery directory name
 	private static final String KEY_CATEGORIES_NAME = "categories";
 
-
 	public PrefManager(Context context) {
 		this._context = context;
 		pref = _context.getSharedPreferences(PREF_NAME, PRIVATE_MODE);
-
 	}
 
     /**
@@ -74,7 +71,6 @@ public class PrefManager {
         return pref.getInt("lastUpdated", 0);
     }
 
-
     ///////////////////////////////////////
 
     /**
@@ -93,7 +89,6 @@ public class PrefManager {
         return pref.getBoolean("show_notification", true);
     }
 
-
     /**
      * Storing post display format style
      * */
@@ -109,7 +104,6 @@ public class PrefManager {
     public String getPostDisplayFormat() {
         return pref.getString("post_display_format", "small");
     }
-
 
 	/**
 	 * Storing albums in shared preferences
@@ -151,9 +145,7 @@ public class PrefManager {
 				return a1.getTitle().compareToIgnoreCase(a2.getTitle());
 			}
 		});
-
 		return allAlbums;
-
 	}
 
 	/**
@@ -165,8 +157,6 @@ public class PrefManager {
 			return c1.getTitle().compareTo(c2.getTitle());
 		}
 	}
-
-
 
     /**
      * Storing icon shortcut

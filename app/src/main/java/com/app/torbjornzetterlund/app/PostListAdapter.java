@@ -1,10 +1,5 @@
 package com.app.torbjornzetterlund.app;
 
-import com.app.torbjornzetterlund.R;
-
-import java.util.ArrayList;
-import java.util.List;
-
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Context;
@@ -21,7 +16,11 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.android.volley.toolbox.ImageLoader;
+import com.app.torbjornzetterlund.R;
 import com.squareup.picasso.Picasso;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class PostListAdapter extends RecyclerView.Adapter<PostListAdapter.ViewHolder> {
@@ -127,20 +126,6 @@ public class PostListAdapter extends RecyclerView.Adapter<PostListAdapter.ViewHo
         if (item.getImge() != null) {
             Picasso.with(this.activity).load(item.getImge()).into(holder.postImageView);
 
-
-            /*holder.postImageView.setImageUrl(item.getImge(), imageLoader);
-            holder.postImageView.setVisibility(View.VISIBLE);
-            holder.postImageView
-                    .setResponseObserver(new PostImageView.ResponseObserver() {
-                        @Override
-                        public void onError() {
-                        }
-
-                        @Override
-                        public void onSuccess() {
-                        }
-                    });
-            */
         } else {
             //holder.postImageView.setVisibility(View.GONE);
         }

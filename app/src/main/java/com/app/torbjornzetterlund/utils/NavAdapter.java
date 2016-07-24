@@ -1,7 +1,5 @@
 package com.app.torbjornzetterlund.utils;
 
-import com.app.torbjornzetterlund.MainActivity;
-import com.app.torbjornzetterlund.R;
 import android.content.Context;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
@@ -12,6 +10,9 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.app.torbjornzetterlund.MainActivity;
+import com.app.torbjornzetterlund.R;
 
 import java.util.ArrayList;
 
@@ -144,7 +145,7 @@ public class NavAdapter extends RecyclerView.Adapter<NavAdapter.ViewHolder> {
     }
 
 
-    // Witht the following method we check what type of view is being passed
+    // With the following method we check what type of view is being passed
     @Override
     public int getItemViewType(int position) {
         if (isPositionHeader(position))
@@ -157,13 +158,9 @@ public class NavAdapter extends RecyclerView.Adapter<NavAdapter.ViewHolder> {
         return position == 0;
     }
 
-
-
     public interface OnItemClickListener {
         public void onItemClick(View v, NavDrawerItem item, int position);
     }
-
-
 
     /**
      * Accounts for non Navigation Item rows and returns a position minus the correct offset

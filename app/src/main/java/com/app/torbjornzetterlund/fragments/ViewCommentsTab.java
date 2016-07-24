@@ -25,7 +25,6 @@ import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.HttpHeaderParser;
 import com.android.volley.toolbox.JsonArrayRequest;
-import com.android.volley.toolbox.JsonObjectRequest;
 import com.app.torbjornzetterlund.R;
 import com.app.torbjornzetterlund.app.AppController;
 import com.app.torbjornzetterlund.app.Comment;
@@ -111,8 +110,6 @@ public class ViewCommentsTab extends Fragment {
         listView.setLayoutManager(mLayoutManager);                 // Setting the layout Manager
 
         checkInternetConnection();
-
-
 
         mSwipeRefreshLayout = (SwipeRefreshLayout) rootView.findViewById(R.id.swipeRefreshLayout);
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -271,39 +268,6 @@ public class ViewCommentsTab extends Fragment {
     /**
      * Parsing json reponse and passing the data to feed view list adapter
      * */
-    private void parseJsonFeed(JSONObject response) {
-        try {
-            JSONArray feedArray = response.getJSONArray("feed");
-
-            for (int i = 0; i < feedArray.length(); i++) {
-                JSONObject feedObj = (JSONObject) feedArray.get(i);
-
-                Comment item = new Comment();
-                item.setId(feedObj.getInt("ID"));
-                Log.d(TAG, "ID: " + feedObj.getInt("ID"));
-                item.setAuthor(feedObj.getString("author"));
-                item.setAuthorEmail(feedObj.getString("author_email"));
-
-                //item.setStatus(feedObj.getString("status"));
-                String image = feedObj.isNull("avatar") ? null : feedObj.getString("avatar");
-                item.setProfilePic(image);
-                item.setTimeStamp(feedObj.getString("comment_date"));
-                item.setContent(feedObj.getString("comment_content"));
-                feedItems.add(item);
-            }
-
-            // notify data changes to list adapater
-            listAdapter.notifyDataSetChanged();
-            mSwipeRefreshLayout.setRefreshing(false);
-
-            // Hide the loader, make grid visible
-            pbLoader.setVisibility(View.GONE);
-            listView.setVisibility(View.VISIBLE);
-
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-    }
     private void parseJsonArrayFeed(JSONArray response) {
         try {
             JSONArray feedArray = response;
@@ -315,9 +279,7 @@ public class ViewCommentsTab extends Fragment {
                 item.setId(feedObj.getInt("id"));
                 Log.d(TAG, "ID: " + feedObj.getInt("id"));
                 item.setAuthor(feedObj.getString("author_name"));
-                //item.setAuthorEmail(feedObj.getString("author_email"));
 
-                //item.setStatus(feedObj.getString("status"));
                 String image = feedObj.getJSONObject("author_avatar_urls").getString("96") == null ? null : feedObj.getJSONObject("author_avatar_urls").getString("96");
                 item.setProfilePic(image);
 

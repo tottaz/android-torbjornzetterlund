@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item name="gcm_sender_id" type="string" format="string">254975680956</item>
+    <item name="gcm_url" type="string">http://torbjornzetterlund.com/</item>
+    <item name="gcm_notification_icon" type="drawable">@drawable/ic_launcher</item>
+    <item name="gcm_new_post_title" type="string">New Post</item>
+    <item name="gcm_new_post_text" type="string">New Post: </item>
+    <item name="gcm_update_post_title" type="string">Post Update</item>
+    <item name="gcm_update_post_text" type="string">Updated Post: </item>
+    <item name="gcm_new_message_title" type="string">New Message</item>
+    <item name="gcm_dialog_ok" type="string">OK</item>
+</resources>

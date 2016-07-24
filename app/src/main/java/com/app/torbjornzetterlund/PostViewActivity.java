@@ -190,9 +190,6 @@ public class PostViewActivity extends AppCompatActivity {
             Log.d(TAG, "Resume: " + savedInstanceState.toString());
             selectedPostID = (String) savedInstanceState.getString(TAG_SEL_POST_ID);
             selectedPostTitle = (String) savedInstanceState.getString(TAG_SEL_POST_TITLE);
-            /*selectedPostID = (String) savedInstanceState.getSerializable(TAG_SEL_POST_ID);
-            selectedPostTitle = (String) savedInstanceState.getSerializable(TAG_SEL_POST_TITLE);*/
-
         }
 
         //Setting up Fields Display
@@ -224,7 +221,7 @@ public class PostViewActivity extends AppCompatActivity {
             post_contentHTML.setVisibility(View.VISIBLE);
             WebSettings webSettings = post_contentHTML.getSettings();
             post_contentHTML.getSettings().setJavaScriptEnabled(true);
-            post_contentHTML.addJavascriptInterface(this, "BlogPress");
+            post_contentHTML.addJavascriptInterface(this, "Wordpress");
             post_contentHTML.getSettings().setAllowContentAccess(true);
             post_contentHTML.getSettings().setCacheMode(WebSettings.LOAD_NO_CACHE);
             post_contentHTML.getSettings().setLoadsImagesAutomatically(true);
@@ -240,19 +237,6 @@ public class PostViewActivity extends AppCompatActivity {
 
         postImageView = (ImageView) findViewById(R.id.image);
         profilePic = (NetworkImageView) findViewById(R.id.profilePic);
-
-
-        //Setting up Post Image and Toolbar Activity
-        //final ImageView image = (ImageView) findViewById(R.id.image);
-        /*ViewCompat.setTransitionName(postImageView, TAG_SEL_POST_IMAGE);
-
-        Bitmap bitmap = ((BitmapDrawable) postImageView.getDrawable()).getBitmap();
-        Palette.generateAsync(bitmap, new Palette.PaletteAsyncListener() {
-            public void onGenerated(Palette palette) {
-                applyPalette(palette, postImageView);
-            }
-        });*/
-
 
         //Setting Up Post Admob Banner
         ////Standard Banner
@@ -578,13 +562,10 @@ public class PostViewActivity extends AppCompatActivity {
 
             }
 
-
             profilePic.setImageUrl(feedObj.getString("author_image_thumbnail_url"), imageLoader);
 
-
             loadConfig();
-            //pbLoader.setVisibility(View.GONE);
-            //llayout.setVisibility(View.VISIBLE);
+
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -609,11 +590,6 @@ public class PostViewActivity extends AppCompatActivity {
                             applyPalette(palette, postImageView);
                         }
                     });
-                    /*Palette.generateAsync(bitmap, new Palette.PaletteAsyncListener() {
-                        public void onGenerated(Palette palette) {
-                            applyPalette(palette, postImageView);
-                        }
-                    });*/
                 }
 
                 @Override
@@ -625,7 +601,6 @@ public class PostViewActivity extends AppCompatActivity {
             postImageView.setVisibility(View.GONE);
         }
     }
-
 
     @JavascriptInterface
     public void resize(final float height) {
@@ -641,7 +616,7 @@ public class PostViewActivity extends AppCompatActivity {
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
-        post_contentHTML.loadUrl("javascript:BlogPress.resize(document.body.getBoundingClientRect().height)");
+        post_contentHTML.loadUrl("javascript:Wordpress.resize(document.body.getBoundingClientRect().height)");
     }
 
     public static CharSequence trimTrailingWhitespace(CharSequence source) {
@@ -735,7 +710,6 @@ public class PostViewActivity extends AppCompatActivity {
             return urlDrawable;
         }
     }
-
 
     @Override
     protected void onStart() {

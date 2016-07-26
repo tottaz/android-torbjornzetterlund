@@ -324,7 +324,10 @@ public class MainActivity extends AppCompatActivity implements NavAdapter.Callba
             Toast.makeText(getApplicationContext(),"Error in creating fragment", Toast.LENGTH_LONG).show();
         }
     }
-
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        //No call for super(). Bug on API Level > 11.
+    }
     /**
      * Displaying fragment view for social profiles
      * */

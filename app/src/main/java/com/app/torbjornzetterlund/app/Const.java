@@ -27,7 +27,7 @@ public class Const {
     public static final boolean ADMOBService_ACTIVE         = true;
     //public static final int UpdateCheckIn = (15*60) * 1000; // 15 minutes
     //TODO revert to 15 minutes.
-    public static final int UpdateCheckIn = (15*60) * 1000; // 1 minute
+    public static final int UpdateCheckIn = (60) * 1000; // 1 minute
     public static final Boolean ShowPostAsWebView = true;
     public static final Boolean ShowPostOnExternalBrowser = true;
     public static final boolean Analytics_ACTIVE         = true;

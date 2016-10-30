@@ -1,13 +1,10 @@
-package com.app.torbjornzetterlund.gcm;
+package com.app.torbjornzetterlund.fcm;
 
 import android.app.IntentService;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Build;
 import android.util.Log;
-
-import com.google.android.gms.gcm.GoogleCloudMessaging;
-import com.google.android.gms.iid.InstanceID;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -21,40 +18,40 @@ import java.net.URL;
  *
  * Register the Device in your WordPress Blog using your senderId
  */
-public class GcmRegisterIntent extends IntentService {
+public class FcmRegisterIntent extends IntentService {
 
-	String LOG_TAG = "WP GCM";
-	String token, gcmurl, senderId;
+	String LOG_TAG = "WP FCM";
+	String token, fcmurl, senderId;
 	SharedPreferences prefs;
 //    Context context;
 
-	public GcmRegisterIntent() {
+	public FcmRegisterIntent() {
 		super("RegIntent");
 	}
 
 	@Override
     protected void onHandleIntent(Intent intent) {
         Log.w(LOG_TAG, "Starting registration");
-		prefs = getSharedPreferences("wp_gcm", 0);
+		prefs = getSharedPreferences("wp_fcm", 0);
 
-        gcmurl = getString( getResources().getIdentifier("gcm_url", "string", getApplicationContext().getPackageName()) );
-        senderId = getString( getResources().getIdentifier("gcm_sender_id", "string", getApplicationContext().getPackageName()) );
+        fcmurl = getString( getResources().getIdentifier("fcm_url", "string", getApplicationContext().getPackageName()) );
+        senderId = getString( getResources().getIdentifier("fcm_sender_id", "string", getApplicationContext().getPackageName()) );
 
-		try {
-            synchronized("RegIntent") {
-            	InstanceID instanceID = InstanceID.getInstance(this);
-            	token = instanceID.getToken(senderId, GoogleCloudMessaging.INSTANCE_ID_SCOPE, null);
-				if(token != null) {
+//		try {
+//            synchronized("RegIntent") {
+ //           	InstanceID instanceID = InstanceID.getInstance(this);
+ //           	token = instanceID.getToken(senderId, GoogleCloudMessaging.INSTANCE_ID_SCOPE, null);
+//				if(token != null) {
 					SharedPreferences.Editor editor = prefs.edit();
-					editor.putBoolean("doGcm", false);
-					editor.putString("GcmToken", token);
+					editor.putBoolean("doFcm", false);
+					editor.putString("FcmToken", token);
 					editor.apply();
 					register();
-				}
-            }
-		}catch(IOException e) {
-			Log.e(LOG_TAG, e.toString());
-		}
+//				}
+//            }
+//		}catch(IOException e) {
+//			Log.e(LOG_TAG, e.toString());
+//		}
 	}
 	
 	// Get the device model name with manufacturer name
@@ -89,10 +86,10 @@ public class GcmRegisterIntent extends IntentService {
 		String model = getDeviceName();
 		os = os.replaceAll(" ", "%20");
 		model = model.replaceAll(" ", "%20");
-		gcmurl += "?regId="+ token + "&os=Android%20"+ os + "&model="+ model;
+		fcmurl += "?regId="+ token + "&os=Android%20"+ os + "&model="+ model;
 
 		try {
-			URL url = new URL(gcmurl);
+			URL url = new URL(fcmurl);
 			HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 			conn.setRequestMethod("POST");
 			conn.connect();

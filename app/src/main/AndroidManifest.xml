@@ -118,37 +118,19 @@
         </receiver>
         <service android:name="com.google.android.gms.analytics.CampaignTrackingService" />
 
-        <!-- GCM -->
-        <receiver
-            android:name="com.google.android.gms.gcm.GcmReceiver"
-            android:exported="true"
-            android:permission="com.google.android.c2dm.permission.SEND" >
-            <intent-filter>
-                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
-                <category android:name="com.pixelartdev.wpgcmlib" />
-            </intent-filter>
-        </receiver>
+        <!-- FCM -->
 
-        <service
-            android:name="com.app.torbjornzetterlund.gcm.GcmListener"
-            android:exported="false" >
+        <service android:name="com.app.torbjornzetterlund.fcm.FcmListener">
             <intent-filter>
-                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
+                <action android:name="com.google.firebase.MESSAGING_EVENT"/>
             </intent-filter>
         </service>
 
-        <service
-            android:name="com.app.torbjornzetterlund.gcm.GcmRegisterIntent"
-            android:exported="false">
-        </service>
-
-        <service
-            android:name="com.app.torbjornzetterlund.gcm.InstanceIdListenerService"
-            android:exported="false">
+        <service android:name="com.app.torbjornzetterlund.fcm.FcmIDService">
             <intent-filter>
-                <action android:name="com.google.android.gms.iid.InstanceID"/>
+                <action android:name="com.google.firebase.INSTANCE_ID_EVENT"/>
             </intent-filter>
         </service>
-        <!-- END GCM -->
+
     </application>
 </manifest>

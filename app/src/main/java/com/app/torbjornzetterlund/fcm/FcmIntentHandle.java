@@ -1,4 +1,4 @@
-package com.app.torbjornzetterlund.gcm;
+package com.app.torbjornzetterlund.fcm;
 
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -19,7 +19,7 @@ import android.util.Log;
  * Override {@link #updatePost()} method to change the handling of the updatePost event
  * Override {@link #message()} method to change the handling of the message event
  */
-public class GcmIntentHandle extends AppCompatActivity {
+public class FcmIntentHandle extends AppCompatActivity {
 
 	String LOG_TAG = "WP GCM";
 	String pkg;
@@ -69,7 +69,7 @@ public class GcmIntentHandle extends AppCompatActivity {
     	String id = getIntent().getStringExtra("post_id");
     	String author = getIntent().getStringExtra("post_author");
     	
-    	Intent intent = new Intent(GcmIntentHandle.this, Class.forName(prefs.getString("class", null)));
+    	Intent intent = new Intent(FcmIntentHandle.this, Class.forName(prefs.getString("class", null)));
  		intent.putExtra("post_title", title);
  		intent.putExtra("post_url", url);
  		intent.putExtra("post_id", id);
@@ -88,7 +88,7 @@ public class GcmIntentHandle extends AppCompatActivity {
     	String id = getIntent().getStringExtra("post_id");
     	String author = getIntent().getStringExtra("post_author");
     	
-    	Intent intent = new Intent(GcmIntentHandle.this, Class.forName(prefs.getString("class", null)));
+    	Intent intent = new Intent(FcmIntentHandle.this, Class.forName(prefs.getString("class", null)));
  		intent.putExtra("post_title", title);
  		intent.putExtra("post_url", url);
  		intent.putExtra("post_id", id);

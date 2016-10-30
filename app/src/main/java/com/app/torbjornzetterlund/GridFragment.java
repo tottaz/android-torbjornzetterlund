@@ -434,9 +434,6 @@ public class GridFragment extends Fragment {
                     }
                 }
 
-
-
-
 				// Image might be null sometimes
                 String image = null;
                 String postFormat = AppController.getInstance().getPrefManger().getPostDisplayFormat();

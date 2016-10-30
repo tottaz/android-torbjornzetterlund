@@ -1,0 +1,104 @@
+{
+  "project_info": {
+    "project_number": "928159876375",
+    "firebase_url": "https://admob-app-id-3962639569.firebaseio.com",
+    "project_id": "admob-app-id-3962639569",
+    "storage_bucket": "admob-app-id-3962639569.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:928159876375:android:c26d45f187181cd9",
+        "android_client_info": {
+          "package_name": "com.cycletrippin.fitness"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "928159876375-t002uqg6g73d22s9h93de5f2d8eq19lh.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAqXiFUkkueb-YmSqogr8VxjgZ3GBZio48"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:928159876375:android:d657cdd022c15699",
+        "android_client_info": {
+          "package_name": "com.cycletrippin.cityguide"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "928159876375-t002uqg6g73d22s9h93de5f2d8eq19lh.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAqXiFUkkueb-YmSqogr8VxjgZ3GBZio48"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:928159876375:android:04bc2f7ef84f0ff9",
+        "android_client_info": {
+          "package_name": "com.app.torbjornzetterlund"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "928159876375-t002uqg6g73d22s9h93de5f2d8eq19lh.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAqXiFUkkueb-YmSqogr8VxjgZ3GBZio48"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

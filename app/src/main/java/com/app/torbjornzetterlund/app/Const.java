@@ -2,16 +2,14 @@ package com.app.torbjornzetterlund.app;
 
 public class Const {
 
-    public static final String URL_BLOG_CATEGORIES      = "http://www.torbjornzetterlund.com/wp-json/wp/v2/categories?per_page=60";
-    public static final String URL_RECENTLY_ADDED       = "http://www.torbjornzetterlund.com/wp-json/wp/v2/posts/";
+    public static final String URL_BLOG_CATEGORIES      = "https://torbjornzetterlund.com/wp-json/wp/v2/categories?per_page=60";
+    public static final String URL_RECENTLY_ADDED       = "https://torbjornzetterlund.com/wp-json/wp/v2/posts/";
     public static final String URL_AUTHOR               = "https://torbjornzetterlund.com/wp-json/wp/v2/users/";//    public static final String URL_RECENTLY_ADDED    = "http://www.torbjornzetterlund.com/api/get_recent_posts/";
-    public static final String URL_CATEGORY_POST	    = "http://torbjornzetterlund.com/wp-json/wp/v2/posts?categories=_CAT_ID_";
-    public static final String URL_STORY_PAGE	 	    = "http://torbjornzetterlund.com/wp-json/wp/v2/posts/_STORY_ID_/";
-    public static final String URL_SEARCH_RESULT	    = "http://www.torbjornzetterlund.com/wp-json/wp/v2/posts?search=_SEARCH_KEYWORD_";
-    public static final String URL_COMMENTS_PAGE	    = "http://torbjornzetterlund.com/wp-json/wp/v2/comments?post=_STORY_ID_";
-    public static final String URL_COMMENTS_LIST_PAGE   = "http://torbjornzetterlund.com/wp-json/wp/v2/comments?post=_STORY_ID_";
+    public static final String URL_CATEGORY_POST	    = "https://torbjornzetterlund.com/wp-json/wp/v2/posts?categories=_CAT_ID_";
+    public static final String URL_STORY_PAGE	 	    = "https://torbjornzetterlund.com/wp-json/wp/v2/posts/_STORY_ID_/";
+    public static final String URL_SEARCH_RESULT	    = "https://torbjornzetterlund.com/wp-json/wp/v2/posts?search=_SEARCH_KEYWORD_";
+    public static final String URL_COMMENTS_LIST_PAGE   = "https://torbjornzetterlund.com/wp-json/wp/v2/comments?post=_STORY_ID_";
 
-    public static final String PACKAGE_INTENT = "com.app.torbjornzetterlund.NEW_UPDATE";
     public static final boolean ADMOBService_ACTIVE         = true;
     public static final Boolean ShowPostAsWebView = true;
     public static final Boolean ShowPostOnExternalBrowser = true;
@@ -26,7 +24,7 @@ public class Const {
     public static final String  forceRTLLang = "ar";
 
     public static final String Facebook_URL        = "https://www.facebook.com/totta.zetterlund";
-    public static final String Twitter_URL         = "http://twitter.com/mrfindmore";
+    public static final String Twitter_URL         = "https://twitter.com/mrfindmore";
     public static final String GooglePlus_URL      = "https://plus.google.com/u/0/+TorbjornZetterlund-totta";
 
     //Enter the Test Device ID where you can test the ADMob Feature

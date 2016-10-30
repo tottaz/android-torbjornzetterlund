@@ -31,7 +31,6 @@ import android.widget.Toast;
 import com.app.torbjornzetterlund.app.AppController;
 import com.app.torbjornzetterlund.app.Category;
 import com.app.torbjornzetterlund.app.Const;
-import com.app.torbjornzetterlund.gcm.GcmRegisterIntent;
 import com.app.torbjornzetterlund.utils.AnalyticsUtil;
 import com.app.torbjornzetterlund.utils.NavAdapter;
 import com.app.torbjornzetterlund.utils.NavDrawerItem;
@@ -119,8 +118,8 @@ public class MainActivity extends AppCompatActivity implements NavAdapter.Callba
 
         if (checkPlayServices()) {
             // Start IntentService to register this application with GCM.
-            Intent intent = new Intent(this, GcmRegisterIntent.class);
-            startService(intent);
+//            Intent intent = new Intent(this, GcmRegisterIntent.class);
+//            startService(intent);
         }
 
         //Listing All Fetched Categories

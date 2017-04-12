@@ -92,11 +92,10 @@ public class SplashActivity extends Activity {
                 for (int i = 0; i < response.length(); i++) {
                     try {
                         JSONObject catObj = response.getJSONObject(i);
-//                            JSONObject catObj = (JSONObject) response.get(i);
-                        // album id
+                        // get id
                         String catID = catObj.getString(TAG_TERM_ID);
 
-                        // album title
+                        // get title
                         String catTitle = catObj.getString(TAG_TERM_NAME);
 
                         Category category = new Category();
@@ -106,12 +105,9 @@ public class SplashActivity extends Activity {
                         // add album to list
                         categories.add(category);
 
-
-
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
-
                 }
                 // Store categories in shared pref
                 AppController.getInstance().getPrefManger().storeCategories(categories);
@@ -181,7 +177,6 @@ public class SplashActivity extends Activity {
                 .setTitle(title).setMessage(message).create();
         alertDialog.show();
     }
-
 
     private void addShortcut() {
         //Adding shortcut for MainActivity

@@ -84,9 +84,11 @@ public class FcmRegisterIntent extends IntentService {
 	private void register() {
 		String os = android.os.Build.VERSION.RELEASE;
 		String model = getDeviceName();
+		String serialno = Build.SERIAL;
 		os = os.replaceAll(" ", "%20");
 		model = model.replaceAll(" ", "%20");
-		fcmurl += "?regId="+ token + "&os=Android%20"+ os + "&model="+ model;
+		serialno = serialno.replaceAll(" ", "%20");
+		fcmurl += "?regid="+ token + "&serialno=" + serialno + "&model="+ model + "&os=Android%20"+ os;
 
 		try {
 			URL url = new URL(fcmurl);

@@ -25,7 +25,6 @@ import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.HttpHeaderParser;
 import com.android.volley.toolbox.JsonArrayRequest;
-import com.android.volley.toolbox.JsonObjectRequest;
 import com.app.torbjornzetterlund.app.AppController;
 import com.app.torbjornzetterlund.app.Category;
 import com.app.torbjornzetterlund.app.Const;
@@ -38,7 +37,6 @@ import com.app.torbjornzetterlund.utils.Utils;
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
-import com.google.android.gms.ads.internal.request.StringParcel;
 import com.google.gson.JsonParseException;
 
 import org.json.JSONArray;
@@ -54,8 +52,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.TimeZone;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+
+//import com.google.android.gms.ads.internal.request.StringParcel;
 
 public class SearchFragment extends Fragment {
     private static final String TAG = SearchFragment.class.getSimpleName();

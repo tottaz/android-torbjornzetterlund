@@ -37,6 +37,7 @@ import com.app.torbjornzetterlund.utils.NavDrawerItem;
 import com.app.torbjornzetterlund.utils.Utils;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
+import com.app.torbjornzetterlund.fcm.FcmRegisterIntent;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -117,9 +118,9 @@ public class MainActivity extends AppCompatActivity implements NavAdapter.Callba
           editor.apply();
 
         if (checkPlayServices()) {
-            // Start IntentService to register this application with GCM.
-//            Intent intent = new Intent(this, GcmRegisterIntent.class);
-//            startService(intent);
+            // Start IntentService to register this application with FCM.
+            Intent intent = new Intent(this, FcmRegisterIntent.class);
+            startService(intent);
         }
 
         //Listing All Fetched Categories

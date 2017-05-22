@@ -15,14 +15,14 @@ import com.google.firebase.iid.FirebaseInstanceIdService;
  */
 public class FcmIDService extends FirebaseInstanceIdService {
 
-    String LOG_TAG = "WP GCM";
+    String LOG_TAG = "WP FCM";
 
     @Override
     public void onTokenRefresh() {
         // Get updated InstanceID token.
         String refreshedToken = FirebaseInstanceId.getInstance().getToken();
         Log.d(LOG_TAG, "Refreshed token: " + refreshedToken);
-        // TODO: Implement this method to send any registration to your app's servers.
+        // send registration to app's servers.
         sendRegistrationToServer(refreshedToken);
     }
     /**

@@ -10,6 +10,8 @@ public class Const {
     public static final String URL_SEARCH_RESULT	    = "https://torbjornzetterlund.com/wp-json/wp/v2/posts?search=_SEARCH_KEYWORD_";
     public static final String URL_COMMENTS_LIST_PAGE   = "https://torbjornzetterlund.com/wp-json/wp/v2/comments?post=_STORY_ID_";
 
+    public static final String URL_REGISTER_DEVICE      = "https://torbjornzetterlund.com/wp-json/thorfcmapi/v2/register";
+
     public static final boolean ADMOBService_ACTIVE         = true;
     public static final Boolean ShowPostAsWebView = true;
     public static final Boolean ShowPostOnExternalBrowser = true;

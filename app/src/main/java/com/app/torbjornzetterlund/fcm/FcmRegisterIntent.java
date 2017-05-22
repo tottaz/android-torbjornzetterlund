@@ -4,7 +4,11 @@ import android.app.IntentService;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Build;
+import android.text.TextUtils;
 import android.util.Log;
+
+import com.app.torbjornzetterlund.app.Const;
+import com.google.firebase.iid.FirebaseInstanceId;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -32,26 +36,16 @@ public class FcmRegisterIntent extends IntentService {
 	@Override
     protected void onHandleIntent(Intent intent) {
         Log.w(LOG_TAG, "Starting registration");
-		prefs = getSharedPreferences("wp_fcm", 0);
 
-        fcmurl = getString( getResources().getIdentifier("fcm_url", "string", getApplicationContext().getPackageName()) );
-        senderId = getString( getResources().getIdentifier("fcm_sender_id", "string", getApplicationContext().getPackageName()) );
+		String token = "";
+		for (int i = 0; i < 10; i++) {
+			token = FirebaseInstanceId.getInstance().getToken();
+			if(!TextUtils.isEmpty(token)) break;
+		}
 
-//		try {
-//            synchronized("RegIntent") {
- //           	InstanceID instanceID = InstanceID.getInstance(this);
- //           	token = instanceID.getToken(senderId, GoogleCloudMessaging.INSTANCE_ID_SCOPE, null);
-//				if(token != null) {
-					SharedPreferences.Editor editor = prefs.edit();
-					editor.putBoolean("doFcm", false);
-					editor.putString("FcmToken", token);
-					editor.apply();
-					register();
-//				}
-//            }
-//		}catch(IOException e) {
-//			Log.e(LOG_TAG, e.toString());
-//		}
+		Log.d("FCM_TOKEN", token);
+
+		sendRegistrationToServer(token);
 	}
 	
 	// Get the device model name with manufacturer name
@@ -81,19 +75,22 @@ public class FcmRegisterIntent extends IntentService {
 	//  Register the device details
 	//
 
-	private void register() {
+	private void sendRegistrationToServer(String token) {
+
 		String os = android.os.Build.VERSION.RELEASE;
 		String model = getDeviceName();
 		String serialno = Build.SERIAL;
 		os = os.replaceAll(" ", "%20");
 		model = model.replaceAll(" ", "%20");
 		serialno = serialno.replaceAll(" ", "%20");
+		// Categories request to get list of featured categories
+		String fcmurl = Const.URL_REGISTER_DEVICE;
 		fcmurl += "?regid="+ token + "&serialno=" + serialno + "&model="+ model + "&os=Android%20"+ os;
 
 		try {
 			URL url = new URL(fcmurl);
 			HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-			conn.setRequestMethod("POST");
+			conn.setRequestMethod("GET");
 			conn.connect();
 
 			final int statusCode = conn.getResponseCode();

@@ -452,7 +452,7 @@ public class GridFragment extends Fragment {
                 try {
                     SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
                     formatter.setTimeZone(TimeZone.getTimeZone("GMT"));
-                    Date date = formatter.parse(feedObj.getString("date"));
+                    Date date = formatter.parse(feedObj.getString("date_gmt"));
                     item.setTimeStamp(String.valueOf(date.getTime()));
                 }catch (ParseException e){
 
